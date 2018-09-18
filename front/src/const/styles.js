@@ -64,8 +64,7 @@ const classes = theme => ({
 		padding: theme.spacing.unit * 3,
 	},
 	button: {
-		margin: 20,
-		fontSize: 20,
+		margin: theme.spacing.unit,
 	},
 	leftIcon: {
 		marginRight: theme.spacing.unit,

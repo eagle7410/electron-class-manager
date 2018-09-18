@@ -12,7 +12,10 @@ const newItem = {
 };
 
 const initialState = {
-	list: [],
+	list: [{
+		label  : 'Google',
+		isInit : false,
+	}],
 	newItem,
 	errors  : {}
 };

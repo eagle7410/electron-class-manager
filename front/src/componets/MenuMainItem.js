@@ -20,6 +20,7 @@ const MenuMainItem = (state) => {
 		<ListItem button
 		          style={style}
 		          onClick={() => state.history.push(state.path) }
+		          disabled={state.disabled || false}
 
 		>
 			<ListItemIcon>

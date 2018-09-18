@@ -31,7 +31,7 @@ const Header = (state) => {
 					<MenuIcon />
 				</IconButton>
 				<Typography variant="title" color="inherit" noWrap>
-					Socket IO tools. Power by <a
+					JAVA SCRIPT Class manager. Power by <a
 						href="https://drive.google.com/file/d/1tm6j8uGoeEbaVDYKlsQlkkxAD5WMXp3-/view?usp=sharing"
 						style={{color:"red"}}
 						target="_blank  "

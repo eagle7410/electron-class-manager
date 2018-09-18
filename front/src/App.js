@@ -29,14 +29,14 @@ class App extends  Component {
 	async componentDidMount() {
 		try {
 
-			const data = await Api.getUsers();
-
-			store.dispatch({type : `${USERS}_SET`, data});
-
-			window.addEventListener(
-				Api.eventRoom(),
-				event => store.dispatch({type : `${EVENT_ROOM}_ADD`, data: event.detail})
-			);
+			// const data = await Api.getUsers();
+			//
+			// store.dispatch({type : `${CONNECTION}_SET`, data});
+			//
+			// window.addEventListener(
+			// 	Api.eventRoom(),
+			// 	event => store.dispatch({type : `${EVENT_ROOM}_ADD`, data: event.detail})
+			// );
 
 			return true;
 

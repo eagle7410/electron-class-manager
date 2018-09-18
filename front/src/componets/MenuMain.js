@@ -11,18 +11,16 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import Badge from '@material-ui/core/Badge';
 
 import IconUsers  from '@material-ui/icons/SettingsInputComponent';
-import IconEvents from '@material-ui/icons/NotificationImportant';
-import IconSend from '@material-ui/icons/Send';
+import IconToCloud from '@material-ui/icons/CloudDownload';
+import IconFromCloud from '@material-ui/icons/CloudUpload';
 
 import MenuMainItem from './MenuMainItem'
 
 const MenuMain = (state) => {
 
 	const { classes, theme } = state;
-	const countEvent = state.eventRoom.events.length;
 
 	return (
 		<Drawer
@@ -42,19 +40,11 @@ const MenuMain = (state) => {
 				<MenuMainItem label={'Connections'} path={'/connections'}>
 					<IconUsers />
 				</MenuMainItem>
-				<MenuMainItem label={'Emitter'} path={'/emitter'}>
-					<IconSend />
+				<MenuMainItem label={'From cloud'} path={'/emitter'} disabled={true}>
+					<IconToCloud />
 				</MenuMainItem>
-				<MenuMainItem label={'Listen'} path={'/listen'}>
-					{
-						countEvent
-							?
-								<Badge badgeContent={countEvent} color="secondary" classes={{ badge: classes.badge }}>
-									<IconEvents />
-								</Badge>
-							: <IconEvents />
-					}
-
+				<MenuMainItem label={'To cloud'} path={'/listen'} disabled={true}>
+					<IconFromCloud />
 				</MenuMainItem>
 			</List>
 		</Drawer>
@@ -64,7 +54,6 @@ const MenuMain = (state) => {
 export default connect(
 	state => ({
 		store: state.Menu,
-		eventRoom: state.Events
 	}),
 	dispatch => ({
 		close : () => dispatch({type :`${PREFIX}_CLOSE`}),

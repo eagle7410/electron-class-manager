@@ -1,22 +1,35 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import Panel from '../Panel'
-import TextField from "@material-ui/core/TextField/TextField";
-import FormControl from "@material-ui/core/FormControl/FormControl";
 import Button from '@material-ui/core/Button';
 import {withStyles} from "@material-ui/core";
 import {classes} from "../../const/styles";
 import {
 	PREFIX_ALERT as ALERT,
-	PREFIX_CONNECTION as USERS
+	PREFIX_CONNECTION as CONNECTION
 } from "../../const/prefix";
 
 import {ICON_TYPES, TYPES} from "../../const/alert";
-import DeleteIcon from '@material-ui/icons/Delete';
+import ActiveYes from '@material-ui/icons/CheckCircle';
+import ActiveNo from '@material-ui/icons/HighlightOff';
+import Connect from '@material-ui/icons/CastConnected';
+import GetConfig from '@material-ui/icons/GetApp';
+
 import Api from '../../Api'
-import ReactJson from "react-json-view";
+
+import {
+	COLOR_GREEN,
+	COLOR_RED
+} from '../../const/colors'
+
+const styles = {
+	yes : {color : COLOR_GREEN},
+	no  : {color : COLOR_RED},
+};
 
 const List= (state) => {
+
+	const { classes } = state;
 
 	let list = <Panel title={`No users`} key={`usr_empty`} expanded={false} disabled={true} />;
 
@@ -34,35 +47,25 @@ const List= (state) => {
 		};
 
 		list = state.store.list.map((connect, inx) => {
+
+			let icon = connect.isInit ? <ActiveYes style={styles.yes} /> : <ActiveNo style={styles.no} />;
+
 			return (
-				<Panel title={`Connect : "${connect.label}"`} key={`CONNECT_${inx}`}>
-					<Button variant="contained" color="secondary" className={classes.button}
+				<Panel title={<div>{icon} Connect to "{connect.label}"</div>} key={`CONNECT_${inx}`} titleBlue={true} expanded={true}>
+					<Button variant="contained" color="primary" className={classes.button}
+					        disabled={true}
 					        onClick={() => handlerDelete(connect.id)}
 					>
-
-						<DeleteIcon className={classes.leftIcon} />
-						Delete
+						<Connect className={classes.leftIcon} />
+						Connect
 					</Button>
+					<Button variant="contained" color="primary" className={classes.button}
 
-					<FormControl fullWidth={true} margin={'normal'}>
-						<TextField
-							key={`CONNECT_${inx}_url`}
-							value={connect.url}
-							helperText="url"
-						/>
-					</FormControl>
-					<FormControl fullWidth={true} margin={'normal'}>
-						<TextField
-							key={`CONNECT_${inx}_path`}
-							value={connect.path}
-							helperText="path"
-						/>
-					</FormControl>
-					<FormControl fullWidth={true} margin={'normal'}>
-						<ReactJson src={connect.query}
-						           name={`query`}
-						/>
-					</FormControl>
+					        onClick={() => handlerDelete(connect.id)}
+					>
+						<GetConfig className={classes.leftIcon} />
+						Load access config
+					</Button>
 				</Panel>
 			);
 		});
@@ -84,6 +87,6 @@ export default connect(
 				type : TYPES.BAD
 			}
 		}),
-		setUsers : data => dispatch({type : `${USERS}_SET`, data})
+		setUsers : data => dispatch({type : `${CONNECTION}_SET`, data})
 	})
 )(withStyles(classes, { withTheme: true })(List))
