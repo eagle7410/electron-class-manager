@@ -1,7 +1,7 @@
 const assert = require('assert');
 const utilPath = require('path');
 const Google = require('../libs/Clouds/classes/Google');
-const accessGoogle = require('../runtime/access-Google');
+const accessGoogle = require('../runtime/_access-Google');
 const driveGoogle = new Google();
 
 let fileData;
@@ -38,10 +38,14 @@ describe('Testing goole drive', function () {
 	});
 
 	it('test folderCreate', async () => {
-		fileData = await driveGoogle.folderCreate({name : 'TEST_IGOR_STCHERBINA'});
-		// TODO: clear
-		console.log('fileData', fileData);
-		// const isDone = await driveGoogle.deleteById({fileId: fileData.id});
-		// assert.ok(isDone);
+		const name = 'TEST_IGOR_STCHERBINA';
+
+		fileData = await driveGoogle.folderCreate({name});
+		assert.ok(fileData.mimeType === Google.mimeTypes.GFolder);
+		assert.ok(fileData.name === name);
+		assert.ok(fileData.id);
+
+		const isDone = await driveGoogle.deleteById({fileId: fileData.id});
+		assert.ok(isDone);
 	})
 });

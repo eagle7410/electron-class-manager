@@ -53,7 +53,8 @@ class Google {
 		}
 	}
 
-	async folderCreate ({name, parents}) {
+	async folderCreate ({name, parents = []}) {
+
 		const mimeType = Google.mimeTypes.GFolder;
 		const requestBody = {
 			name,
