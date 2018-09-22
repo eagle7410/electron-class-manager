@@ -35,6 +35,7 @@ module.exports = class GoogleDrive extends Interface {
 		this._auth = oauth2Client;
 	}
 
+
 	_getInitQuery() {
 		let main = "mimeType='application/vnd.google-apps.folder'";
 

@@ -1,5 +1,5 @@
 let Interface   = require('./classes/CloudInterface');
-let GoogleDrive = require('./classes/GoogleDrive');
+let GoogleDrive = require('./classes/_GoogleDrive');
 
 class CouldFactory {
 	/**
@@ -17,11 +17,11 @@ class CouldFactory {
 				break;
 		}
 
-		if (instance instanceof Interface) {
-			return instance;
-		}
+		// if (instance instanceof Interface) {
+		// 	return instance;
+		// }
 
-		throw new Error('Could not extends Could Interface.');
+		throw new Error('Not found cloud instance.');
 	}
 
 	/**
