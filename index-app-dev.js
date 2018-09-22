@@ -3,14 +3,18 @@ const app           = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const Server        = require('./Server');
 const MainMenu      = require('./MainMenu');
+const Environment   = require('./libs/Environment');
+const fsep          = require('./libs/fsep');
 
-let isDev = false;
+const EnvironmentProps = Environment.getProps();
 
 const includes = async () => {
 
 	try {
 		//~ Dev setting
-		isDev = true;
+		Environment.setConfigProp(EnvironmentProps.isDev, true);
+
+		await fsep.copyFile(`${__dirname}/constants.js`, `${__dirname}/front/src/const/constants.js`);
 
 		const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
 
@@ -24,7 +28,7 @@ const includes = async () => {
 			height : 600
 		});
 
-		await Server.run(mainWindow, isDev);
+		await Server.run(mainWindow);
 
 		//~ Dev setting
 

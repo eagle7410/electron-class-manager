@@ -2,6 +2,11 @@ let Interface   = require('./classes/CloudInterface');
 let GoogleDrive = require('./classes/GoogleDrive');
 
 class CouldFactory {
+	/**
+	 *
+	 * @param type
+	 * @returns {GoogleDrive}
+	 */
 	getCloud (type) {
 		let instance;
 		const types = this.types;
@@ -19,6 +24,10 @@ class CouldFactory {
 		throw new Error('Could not extends Could Interface.');
 	}
 
+	/**
+	 *
+	 * @returns {{google: string}}
+	 */
 	get types () {
 		return {
 			google : 'google',
@@ -27,4 +36,4 @@ class CouldFactory {
 
 }
 
-module.exports = new CouldFactory();
+module.exports = CouldFactory;

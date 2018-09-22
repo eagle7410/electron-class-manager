@@ -5,10 +5,7 @@ import {
 
 const newItem = {
 	label  : '',
-	url    : '',
-	path   : '/',
-	query  : {},
-	listen : []
+	isInit : false,
 };
 
 const initialState = {

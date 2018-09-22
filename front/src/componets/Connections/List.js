@@ -31,7 +31,7 @@ const List= (state) => {
 
 	const { classes } = state;
 
-	let list = <Panel title={`No users`} key={`usr_empty`} expanded={false} disabled={true} />;
+	let list = <Panel title={`No connection`} key={`cnt_empty`} expanded={false} disabled={true} />;
 
 	if (state.store.list.length) {
 		const handlerDelete = async (id) => {
@@ -40,6 +40,18 @@ const List= (state) => {
 				await Api.deleteUser(id);
 
 				state.setUsers(await Api.getUsers());
+
+			} catch (e) {
+				state.showError(e.message || e);
+			}
+		};
+		const handlerLoadAccessConfig = async (label) => {
+			try {
+				const {path} = await Api.pathOpen();
+
+				if (!path) return false;
+
+				await Api.accessFileSave({label, path});
 
 			} catch (e) {
 				state.showError(e.message || e);
@@ -61,7 +73,7 @@ const List= (state) => {
 					</Button>
 					<Button variant="contained" color="primary" className={classes.button}
 
-					        onClick={() => handlerDelete(connect.id)}
+					        onClick={() => handlerLoadAccessConfig(connect.label)}
 					>
 						<GetConfig className={classes.leftIcon} />
 						Load access config

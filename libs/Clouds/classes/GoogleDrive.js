@@ -1,6 +1,9 @@
 const fs = require('fs');
+const googleAuth = require('google-auth-library');
+const {auth} = require('google-auth-library');
+const googleApi  = require('googleapis');
+
 const Interface = require('./CloudInterface');
-const pathManager = require('../../path-manager');
 
 module.exports = class GoogleDrive extends Interface {
 
@@ -9,11 +12,10 @@ module.exports = class GoogleDrive extends Interface {
 
 		const that = this;
 
-		that.googleApi = require('googleapis');
-		that.googleAuth = require('google-auth-library');
-		that.cloudFileName = 'google_access_token.json';
 		that._rootId = null;
-		that._rootFolderName = 'AppsStore';
+		that._rootFolderName = 'ClassStore';
+		that._auth = null;
+		that._service = null
 
 	}
 
@@ -25,7 +27,8 @@ module.exports = class GoogleDrive extends Interface {
 		const clientSecret = authData.installed.client_secret;
 		const clientId = authData.installed.client_id;
 		const redirectUrl = authData.installed.redirect_uris[0];
-		const auth = new this.googleAuth();
+
+		const auth = new googleAuth();
 		const oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl);
 		oauth2Client.credentials = authData.access;
 
@@ -66,23 +69,17 @@ module.exports = class GoogleDrive extends Interface {
 	}
 
 	/**
-	 * Init connect.
+	 * Init connect
+	 * @param authData
+	 * @returns {Promise<any>}
 	 */
-	connectInit() {
+	connectInit(authData) {
 		const that = this;
 
 		return new Promise((ok, bad) => {
-			const authJson = pathManager.getPathToFile(that.pathToAccessToken, that.cloudFileName);
-
-			if (!pathManager.checkExistSync(authJson)) {
-				that._status = that._statuses.noAccessToken;
-				ok()
-			}
-
-			let authData = require(authJson);
 
 			that._setOauth2Client(authData);
-			that._service = that.googleApi.drive('v2').files;
+			that._service = googleApi.drive('v2').files;
 
 			that._service.list({
 				auth: that._auth,
@@ -122,23 +119,22 @@ module.exports = class GoogleDrive extends Interface {
 
 	/**
 	 *
-	 * @param fileZip {string}
-	 * @param fileName {string}
+	 * @param {string} fileLocalPath
+	 * @param {string} fileClouldPath
+	 * @returns {Promise<any>}
 	 */
-	moveToCould(fileZip, fileName = pathManager.getArchiveName()) {
+	moveToCould(fileLocalPath, fileClouldPath) {
 		const that = this;
 
 		function insert(ok, bad) {
-			fs.readFile(fileZip, (err, content) => {
+			fs.readFile(fileLocalPath, (err, content) => {
 
-				if (err) {
-					return bad(err);
-				}
+				if (err) return bad(err);
 
 				that._service.insert({
 					auth: that._auth,
 					resource: {
-						title: fileName,
+						title: fileClouldPath,
 						parents: that.__getRoot()
 					},
 					media: {body: content},
@@ -154,7 +150,7 @@ module.exports = class GoogleDrive extends Interface {
 
 		return new Promise((ok, bad) => {
 
-			that.findFiles(fileName)
+			that.findFiles(fileClouldPath)
 				.then(files => {
 
 					insert((res) => {
@@ -183,8 +179,9 @@ module.exports = class GoogleDrive extends Interface {
 
 	/**
 	 *
-	 * @param folder {string}
-	 * @param fileName {string}
+	 * @param {string} folder
+	 * @param {string} fileName
+	 * @returns {Promise<any>}
 	 */
 	moveFromCould(folder, fileName) {
 		const that = this;
@@ -226,7 +223,9 @@ module.exports = class GoogleDrive extends Interface {
 
 	/**
 	 *
-	 * @param fileName {string}
+	 * @param {string} fileName
+	 *
+	 * @returns {Promise<any>}
 	 */
 	deleteInCould(fileName) {
 		const that = this;
@@ -242,9 +241,5 @@ module.exports = class GoogleDrive extends Interface {
 				})
 				.catch(bad);
 		});
-	}
-
-	isHaveConfig () {
-		return pathManager.checkExistSync(pathManager.getPathToFile(this.pathToAccessToken, this.cloudFileName));
 	}
 }

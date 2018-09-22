@@ -1,11 +1,24 @@
 import LocalStore from './LocalStore'
 import SocketConnect from './SocketConnect'
 
+import {QUERY_PATHS} from '../const/constants'
+import {reqFull, save} from '../tools/req'
 const storeConnections = new LocalStore('socket_connections');
 
 let connect = null;
 
 class Api {
+	static accessFileSave({label, path}) {
+		return reqFull(save, QUERY_PATHS.accessFileSave, {path, label});
+	}
+	static pathOpen () {
+		return reqFull(save, QUERY_PATHS.pathOpen);
+	}
+
+	static pathSave () {
+		return reqFull(save, QUERY_PATHS.pathSave);
+	}
+
 	/**
 	 *
 	 * @param id

@@ -1,11 +1,10 @@
 const electron    = require('electron');
 const ipcRenderer = electron.ipcMain;
 const Send        = require('./libs/Send');
+const Environment = require('./libs/Environment');
 const RouteConfig = require('./RouteConfig');
 
 let mainWindow    = null;
-let _isDev        = false;
-let arConfig      = [];
 
 const methods = Send.methods();
 
@@ -20,7 +19,7 @@ class ListenersHandlers {
 	static listen (action, handel) {
 		let onAction = (event, arg) => handel(event.sender, `${action}-response`, arg);
 
-		if (_isDev)
+		if (Environment.isDev())
 			onAction = (event, arg) => {
 				console.log(`:: ${action} `, arg);
 				handel(event.sender, `${action}-response`, arg);
@@ -33,9 +32,7 @@ class ListenersHandlers {
 		this.listen(`${(config.method || methods.post).toLowerCase()}->${config.route}`, config.handler);
 	}
 
-	static apply (isDev) {
-		_isDev = isDev;
-
+	static apply () {
 		RouteConfig
 			.setWindowMain(mainWindow)
 			.get()

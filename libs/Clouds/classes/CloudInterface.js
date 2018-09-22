@@ -1,4 +1,3 @@
-const pathManager = require('../../path-manager');
 
 module.exports = class CouldInterface {
 
@@ -13,14 +12,15 @@ module.exports = class CouldInterface {
 		};
 
 		that._status = this._statuses.create;
-		that.pathToAccessToken = pathManager.getPathDropBoxData();
+		that.pathToAccessToken = null;
 		that.cloudFileName = null;
 	}
 
 	/**
 	 * Init connect.
+	 * @return {Promise}
 	 */
-	connectInit () {}
+	connectInit (authData) {}
 
 	/**
 	 *
@@ -36,13 +36,6 @@ module.exports = class CouldInterface {
 	 */
 	moveFromCould (folder, fileName)  {}
 
-	/**
-	 *
-	 * @returns {boolean}
-	 */
-	isHaveConfig () {
-		return false;
-	}
 	/**
 	 *
 	 * @param fileName {string}
