@@ -8,6 +8,7 @@ void async function () {
 
 		await driveGoogle.connected(accessGoogle);
 
+		console.log('driveGoogle ', driveGoogle.isConneted);
 	} catch (e) {
 		console.error(e);
 	} finally {
