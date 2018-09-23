@@ -8,8 +8,15 @@ const storeConnections = new LocalStore('socket_connections');
 let connect = null;
 
 class Api {
-	static accessFileSave({label, path}) {
-		return reqFull(save, QUERY_PATHS.accessFileSave, {path, label});
+	static cloudConnect ({alias}) {
+		return reqFull(save, QUERY_PATHS.connected, {alias});
+	}
+
+	static init() {
+		return reqFull(save, QUERY_PATHS.appInit);
+	}
+	static accessFileSave({alias, path}) {
+		return reqFull(save, QUERY_PATHS.accessFileSave, {path, alias});
 	}
 	static pathOpen () {
 		return reqFull(save, QUERY_PATHS.pathOpen);
@@ -35,15 +42,6 @@ class Api {
 	static addConnect(user) {
 		return  storeConnections.add(user);
 	}
-
-	/**
-	 *
-	 * @returns {Promise<Array>}
-	 */
-	static getUsers () {
-		return  storeConnections.getAll();
-	}
-
 
 	static async auth(data) {
 

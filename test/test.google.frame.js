@@ -1,7 +1,7 @@
 const assert = require('assert');
 const utilPath = require('path');
-const Google = require('../libs/Clouds/classes/Google');
-const accessGoogle = require('../runtime/_access-Google');
+const Google = require('../libs/Clouds/classes/GoogleFrame');
+const accessGoogle = require('../runtime/access-Google');
 const driveGoogle = new Google();
 
 let fileData;

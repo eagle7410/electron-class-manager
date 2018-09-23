@@ -1,5 +1,5 @@
-let Interface   = require('./classes/CloudInterface');
-let GoogleDrive = require('./classes/_GoogleDrive');
+const Interface   = require('./classes/CloudInterface');
+const GoogleDrive = require('./classes/GoogleFiles');
 
 class CouldFactory {
 	/**
@@ -17,13 +17,22 @@ class CouldFactory {
 				break;
 		}
 
-		// if (instance instanceof Interface) {
-		// 	return instance;
-		// }
+		if (instance instanceof Interface) {
+			return instance;
+		}
 
 		throw new Error('Not found cloud instance.');
 	}
 
+	/**
+	 *
+	 * @return {{[p: string]: string}}
+	 */
+	get labels () {
+		return {
+			[this.types.google] : 'Google'
+		}
+	}
 	/**
 	 *
 	 * @returns {{google: string}}

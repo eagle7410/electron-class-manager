@@ -1,20 +1,19 @@
+const CloudInterface = require('./CloudInterface');
 const fsep      = require('../../fsep');
 const utilPath  = require('path');
 const {google}  = require('googleapis');
+const {
+	CLOUD_DEFAULT_ROOT_FOLDER_NAME,
+} = require('../../../runtime/constants');
 
-const DEFAULT_ROOT_FOLDER_NAME = 'ClassStore';
-
-class Google {
+class GoogleFrame extends CloudInterface {
 	constructor () {
+		super();
+
 		this._rootId         = null;
-		this._rootFolderName = DEFAULT_ROOT_FOLDER_NAME;
+		this._rootFolderName = CLOUD_DEFAULT_ROOT_FOLDER_NAME;
 		this._auth           = null;
 		this._service        = null;
-		this._isConnected      = false;
-	}
-
-	setParams ({rootFolderName}) {
-		this._rootFolderName = rootFolderName || DEFAULT_ROOT_FOLDER_NAME;
 	}
 
 	/**
@@ -45,6 +44,8 @@ class Google {
 
 			this._isConnected = true;
 
+			await this._hookConnected(response);
+
 			return true;
 
 		} catch (e) {
@@ -55,7 +56,7 @@ class Google {
 
 	async folderCreate ({name, parents = []}) {
 
-		const mimeType = Google.mimeTypes.GFolder;
+		const mimeType = GoogleFrame.mimeTypes.GFolder;
 		const requestBody = {
 			name,
 			mimeType,
@@ -73,19 +74,28 @@ class Google {
 		return true;
 	}
 
+	async findByQuery (query) {
+
+		if (!query.parents) query.parents = [];
+		if (this._rootId && !query.parents.includes(this._rootId)) query.parents.unshift(this._rootId);
+
+		let data = {...query};
+
+		const q = GoogleFrame._query(data);
+		const response = await this.serviceFiles.list({q});
+
+		return response.data;
+	}
+
 	async findByName ({name, parents = [], mimeType}) {
 		let data = {
-			parents : this._parentFolderId.concat(parents),
+			parents,
 			name
 		};
 
 		if (mimeType) data.mimeType = mimeType;
 
-		const q = Google._query(data);
-
-		const response = await this.serviceFiles.list({q});
-
-		return response.data.files
+		return (await this.findByQuery(data)).files;
 	}
 
 	async updateById({fileId, pathLocal, fileName, parents, mimeType, body}) {
@@ -138,6 +148,17 @@ class Google {
 		return result.data;
 	}
 
+	/**
+	 *
+	 * @param response
+	 * @return {Promise<boolean>}
+	 *
+	 * @protected
+	 */
+	async _hookConnected (response) {
+		return true;
+	}
+
 	get serviceFiles () {
 		return this._service.files;
 	}
@@ -160,11 +181,11 @@ class Google {
 	}
 
 	get _initQuery() {
-		let data = {mimeType : Google.mimeTypes.GFolder};
+		let data = {mimeType : GoogleFrame.mimeTypes.GFolder};
 
 		if (this._rootFolderName) data.name = this._rootFolderName;
 
-		return Google._query(data);
+		return GoogleFrame._query(data);
 	}
 
 	/**
@@ -178,9 +199,6 @@ class Google {
 		}
 	}
 
-	get isConnected () {
-		return this._isConnected;
-	}
 
 	static _query (data) {
 		return Object.entries(data)
@@ -190,4 +208,4 @@ class Google {
 	}
 }
 
-module.exports = Google;
+module.exports = GoogleFrame;

@@ -1,53 +1,40 @@
 import {
 	PREFIX_CONNECTION as PREFIX,
-	PREFIX_CONNECTION_ADD as ADD
 } from '../const/prefix'
 
-const newItem = {
-	label  : '',
-	isInit : false,
-};
-
 const initialState = {
-	list: [{
-		label  : 'Google',
-		isInit : false,
-	}],
-	newItem,
+	list: [],
 	errors  : {}
 };
 
 const Connections = (state = initialState, action) => {
 
 	const data = action.data;
+	let connect;
 
 	// eslint-disable-next-line
 	switch (action.type) {
 
-		case ADD:
+
+		case `${PREFIX}_CONNECTED`:
+			connect = state.list.find(c => c.alias === data);
+			connect.isInit = true;
+
 			return {
 				...state,
-				list : [...state.list, data],
-				newItem
+			};
+		case `${PREFIX}_HAS_CONFIG`:
+			connect = state.list.find(c => c.alias === data);
+			connect.isHasConfig = true;
+
+			return {
+				...state,
 			};
 
 		case `${PREFIX}_SET`:
 			return {
 				...state,
 				list: data
-			};
-		case `${ADD}_ERRORS`:
-			return {
-				...state,
-				errors : data
-			};
-		case `${ADD}_INPUT`:
-			return {
-				...state,
-				newItem : {
-					...state.newItem,
-					[action.field] : action.value
-				}
 			};
 	}
 

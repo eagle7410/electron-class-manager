@@ -1,0 +1,8 @@
+formmat node file
+{
+	name : 'Test.js',
+	vesion : '1.0.0',
+	type : 'node',
+	fileId : 'FileId',
+	desc : '',
+}

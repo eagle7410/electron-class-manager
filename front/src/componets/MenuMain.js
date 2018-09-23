@@ -40,10 +40,10 @@ const MenuMain = (state) => {
 				<MenuMainItem label={'Connections'} path={'/connections'}>
 					<IconUsers />
 				</MenuMainItem>
-				<MenuMainItem label={'From cloud'} path={'/emitter'} disabled={true}>
+				<MenuMainItem label={'From cloud'} path={'/emitter'} disabled={!state.store.isConnected}>
 					<IconToCloud />
 				</MenuMainItem>
-				<MenuMainItem label={'To cloud'} path={'/listen'} disabled={true}>
+				<MenuMainItem label={'To cloud'} path={'/listen'} disabled={!state.store.isConnected}>
 					<IconFromCloud />
 				</MenuMainItem>
 			</List>

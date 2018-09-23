@@ -27,31 +27,35 @@ const styles = {
 	no  : {color : COLOR_RED},
 };
 
-const List= (state) => {
+const List = (state) => {
 
 	const { classes } = state;
 
 	let list = <Panel title={`No connection`} key={`cnt_empty`} expanded={false} disabled={true} />;
 
 	if (state.store.list.length) {
-		const handlerDelete = async (id) => {
+
+		const handlerConnection = async (alias) => {
 			try {
+				const {isConnected} = await Api.cloudConnect({alias});
 
-				await Api.deleteUser(id);
+				if (!isConnected) new Error(`Problem with connect`);
 
-				state.setUsers(await Api.getUsers());
-
+				state.connected(alias);
 			} catch (e) {
 				state.showError(e.message || e);
 			}
-		};
-		const handlerLoadAccessConfig = async (label) => {
+		}
+
+		const handlerLoadAccessConfig = async (alias) => {
 			try {
 				const {path} = await Api.pathOpen();
 
 				if (!path) return false;
 
-				await Api.accessFileSave({label, path});
+				await Api.accessFileSave({alias, path});
+
+				state.hasConfig(alias);
 
 			} catch (e) {
 				state.showError(e.message || e);
@@ -65,15 +69,15 @@ const List= (state) => {
 			return (
 				<Panel title={<div>{icon} Connect to "{connect.label}"</div>} key={`CONNECT_${inx}`} titleBlue={true} expanded={true}>
 					<Button variant="contained" color="primary" className={classes.button}
-					        disabled={true}
-					        onClick={() => handlerDelete(connect.id)}
+					        disabled={!connect.isHasConfig || connect.isInit}
+					        onClick={() => handlerConnection(connect.alias)}
 					>
 						<Connect className={classes.leftIcon} />
 						Connect
 					</Button>
 					<Button variant="contained" color="primary" className={classes.button}
 
-					        onClick={() => handlerLoadAccessConfig(connect.label)}
+					        onClick={() => handlerLoadAccessConfig(connect.alias)}
 					>
 						<GetConfig className={classes.leftIcon} />
 						Load access config
@@ -99,6 +103,7 @@ export default connect(
 				type : TYPES.BAD
 			}
 		}),
-		setUsers : data => dispatch({type : `${CONNECTION}_SET`, data})
+		hasConfig : (alias) => dispatch({type : `${CONNECTION}_HAS_CONFIG`, data: alias}),
+		connected : (alias) => dispatch({type : `${CONNECTION}_CONNECTED`, data: alias}),
 	})
 )(withStyles(classes, { withTheme: true })(List))
