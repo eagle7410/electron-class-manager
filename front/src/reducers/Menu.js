@@ -4,9 +4,10 @@ import {
 	PREFIX_UPDATE_LOCATION
 } from '../const/prefix'
 
+// TODO: Back
 const initialState = {
 	open : false,
-	isConnected : false,
+	isConnected : true,
 	location : '/'
 };
 

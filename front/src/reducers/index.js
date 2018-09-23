@@ -5,11 +5,11 @@ import {Events} from './Events'
 import {Connections} from './Connections'
 import {Auth} from './Auth'
 import {Alert} from './Alert'
-import {Emitter} from './Emitter'
+import {Upload} from './Upload'
 
 const reducer = combineReducers({
 	routing: routerReducer,
-	Emitter,
+	Upload,
 	Alert,
 	Auth,
 	Connections,

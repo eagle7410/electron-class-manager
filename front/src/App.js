@@ -62,8 +62,8 @@ class App extends  Component {
 					<Switch>
 						<Route path="/" exact component={Connections}/>
 						<Route path="/connections"  component={Connections}/>
-						<Route path="/emitter"  component={Emitter}/>
-						<Route path="/listen"  component={Listeners}/>
+						<Route path="/upload"  component={Emitter}/>
+						<Route path="/download"  component={Listeners}/>
 					</Switch>
 				</main>
 				<Alert/>

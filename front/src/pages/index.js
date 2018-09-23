@@ -1,6 +1,6 @@
 import Connections from './Connections'
-import Listeners from './Listeners'
-import Emitter from './Emitter'
+import Listeners from './Download'
+import Emitter from './Upload'
 
 export {
 	Connections,

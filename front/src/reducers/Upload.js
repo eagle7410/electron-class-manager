@@ -1,11 +1,15 @@
 import {PREFIX_SEND_FORM as PREFIX} from '../const/prefix'
 
 const initialState = {
-	event : '',
-	body  : {},
+	path    : '',
+	name    : '',
+	version : '0.0.1',
+	type    : 'unknown',
+	npm     : {},
+	classes : {},
 };
 
-const Emitter = (state = initialState, action) => {
+const Upload = (state = initialState, action) => {
 
 	switch (action.type) {
 		case `${PREFIX}_CHANGE_FIELD`:
@@ -18,4 +22,4 @@ const Emitter = (state = initialState, action) => {
 	}
 };
 
-export {Emitter};
+export {Upload};

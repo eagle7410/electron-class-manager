@@ -8,7 +8,7 @@ import Button from "@material-ui/core/Button/Button";
 import {PREFIX_EVENT_ROOM as PREFIX} from '../const/prefix'
 import FormControl from "@material-ui/core/FormControl/FormControl";
 
-const Listeners = (state) => {
+const Download = (state) => {
 
 	const handlerChangeBody = () => false;
 
@@ -37,7 +37,7 @@ const Listeners = (state) => {
 	}
 	return (
 		<div>
-			<h1>Page "Listeners events"</h1>
+			<h1>Page "From cloud"</h1>
 			{list}
 		</div>
 	);
@@ -50,4 +50,4 @@ export default connect(
 	dispatch => ({
 		onDelete : (index) => dispatch({type : `${PREFIX}_REMOVE`, index}),
 	})
-)(Listeners);
+)(Download);
