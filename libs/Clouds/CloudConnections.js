@@ -1,4 +1,5 @@
 const TdoConnect = require('./TdoConnect');
+const TdoGClass = require('./classes/tdo/TdoGClass');
 
 class CloudConnections {
 	constructor () {
@@ -39,6 +40,9 @@ class CloudConnections {
 		return this._connection[this._currect];
 	}
 
+	static get fileTypes () {
+		return TdoGClass.types;
+	}
 	set current (alias) {
 		this._currect = alias;
 	}

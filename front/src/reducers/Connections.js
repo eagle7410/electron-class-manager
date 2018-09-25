@@ -4,6 +4,7 @@ import {
 
 const initialState = {
 	list: [],
+	fileTypes: {},
 	errors  : {}
 };
 
@@ -32,9 +33,11 @@ const Connections = (state = initialState, action) => {
 			};
 
 		case `${PREFIX}_SET`:
+
 			return {
 				...state,
-				list: data
+				list: data,
+				fileTypes : action.fileTypes
 			};
 	}
 

@@ -48,6 +48,10 @@ class CloudConfigs {
 	static get connectionList () {
 		return connections.connectionList;
 	}
+
+	static get fileTypes () {
+		return CloudConnections.fileTypes;
+	}
 }
 
 module.exports = CloudConfigs;

@@ -9,31 +9,28 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import {
-	PREFIX_RUN_CREATE as PREFIX,
-	PREFIX_RUNS
+	PREFIX_DIALOG_ADD_TO_JSON as PREFIX,
 } from "../const/prefix";
 
-import Api from "../Api";
 
 const fields = {
-	label   : 'Label',
-	cmd     : 'Command',
-	comment : 'Comment',
+	prop   : 'Dependency',
+	value     : 'Version',
 };
 
-const DialogCreateRun = (state) => {
+const DialogAddToJson = (state) => {
 
 
 	const handlerCreate = async () => {
 		try {
 
-			let errors = {}, data = {};
+			let errors = {}, data = {type :state.store.type};
 
 			state.errors(errors);
 
 			Object.keys(fields).map(prop => {
 				if (!state.store[prop].length) errors[prop]= `${fields[prop]} is required.`;
-				data[prop] = state.store[prop];
+				data[prop] = state.store[prop].trim();
 			});
 
 			if (Object.keys(errors).length) {
@@ -42,7 +39,6 @@ const DialogCreateRun = (state) => {
 				return false;
 			}
 
-			await Api.add(data);
 
 			state.add(data);
 			state.close();
@@ -60,7 +56,7 @@ const DialogCreateRun = (state) => {
 				aria-labelledby="alert-dialog-title"
 				aria-describedby="alert-dialog-description"
 			>
-				<DialogTitle id="alert-dialog-title">{"Create new command for run"}</DialogTitle>
+				<DialogTitle id="alert-dialog-title">{`Add dependence to ${state.store.type}`}</DialogTitle>
 				<DialogContent>
 					{Object.keys(fields).map(prop =>
 						<div key={`div_create_${prop}`}>
@@ -81,7 +77,7 @@ const DialogCreateRun = (state) => {
 						Chancel
 					</Button>
 					<Button onClick={() => handlerCreate()} color="primary" >
-						Create
+						ADD DEPENDENCY
 					</Button>
 				</DialogActions>
 			</Dialog>
@@ -91,12 +87,12 @@ const DialogCreateRun = (state) => {
 
 export default connect(
 	state => ({
-		store: state.dialogCreateRun
+		store: state.DialogAddToJson
 	}),
 	dispatch => ({
-		add    : (data) => dispatch({type :`${PREFIX_RUNS}_ADD`, data}),
+		add    : (data) => dispatch({type :`${PREFIX}_ADD`, data}),
 		errors : (data) => dispatch({type :`${PREFIX}_ERRORS`, data}),
 		close  : () => dispatch({type :`${PREFIX}_CLOSE`}),
 		input  : (data) => dispatch({type :`${PREFIX}_INPUT`, data}),
 	})
-)(DialogCreateRun);
+)(DialogAddToJson);

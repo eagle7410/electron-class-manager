@@ -29,8 +29,8 @@ class App extends  Component {
 	async componentDidMount() {
 		try {
 
-			const {connections} = await Api.init();
-			store.dispatch({type : `${CONNECTION}_SET`, data : connections});
+			const {connections, fileTypes} = await Api.init();
+			store.dispatch({type : `${CONNECTION}_SET`, data : connections, fileTypes});
 
 			return true;
 

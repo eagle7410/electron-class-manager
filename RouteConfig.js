@@ -30,7 +30,10 @@ const config = [
 	route(QUERY_PATHS.appInit, async (res, action) => {
 		await CloudConfigs.init();
 
-		Send.ok(res, action, {connections : CloudConfigs.connectionList});
+		Send.ok(res, action, {
+			connections : CloudConfigs.connectionList,
+			fileTypes : CloudConfigs.fileTypes
+		});
 	}),
 	route(QUERY_PATHS.accessFileSave, async (res, action, {path, alias}) => {
 		await CloudConfigs.copyConfig(path, alias);

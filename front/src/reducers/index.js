@@ -6,9 +6,11 @@ import {Connections} from './Connections'
 import {Auth} from './Auth'
 import {Alert} from './Alert'
 import {Upload} from './Upload'
+import {DialogAddToJson} from './DialogAddToJson'
 
 const reducer = combineReducers({
 	routing: routerReducer,
+	DialogAddToJson,
 	Upload,
 	Alert,
 	Auth,
