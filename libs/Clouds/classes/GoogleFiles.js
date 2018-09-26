@@ -1,5 +1,6 @@
 const GoogleFrame = require('./GoogleFrame');
 const TdoConfig = require('./tdo/TdoConfig');
+const TdoGClass = require('./tdo/TdoGClass');
 const {
 	CLOUD_FILE_NAME_CONFIG,
 	CLOUD_FILE_NAME_CLASS_STORE
@@ -40,12 +41,33 @@ class GoogleFiles extends GoogleFrame {
 		return true;
 	}
 
+	async addFile({path, name, version, type, npm, classes}) {
+
+		const file = new TdoGClass({path, name, version, type, npm, classes});
+
+		let data = await this.copyToCloud({
+		  parents : this._parentStore,
+		  ...file.dataForUpload
+		});
+
+		file.fileId = data.id;
+
+		this._config.addFile(file);
+
+		await this.updateById({
+			fileId : this._configFileId,
+			body : this._config.body
+		});
+
+		return true;
+	}
+
 	async _loadConfig () {
 		this._config.data = await this.copyFromCloudByFileId({fileId : this._configFileId});
 	}
 
 	get _parentStore() {
-		return [this._rootId, this._storeId];
+		return [this._storeId];
 	}
 
 }

@@ -8,6 +8,9 @@ const storeConnections = new LocalStore('socket_connections');
 let connect = null;
 
 class Api {
+	static toCloud(data) {
+		return reqFull(save, QUERY_PATHS.cloudUpload, data);
+	}
 	static cloudConnect ({alias}) {
 		return reqFull(save, QUERY_PATHS.connected, {alias});
 	}

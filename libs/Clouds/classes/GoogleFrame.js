@@ -140,7 +140,7 @@ class GoogleFrame extends CloudInterface {
 			requestBody: {
 				name: fileName || utilPath.basename(pathLocal),
 				mimeType,
-				parents : this._parentFolderId.concat(parents)
+				parents : (parents.length ? parents : this._parentFolderId)
 			},
 			media: {body, mimeType}
 		});

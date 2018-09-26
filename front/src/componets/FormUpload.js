@@ -9,7 +9,7 @@ import Api from "../Api";
 import {
 	PREFIX_ALERT as ALERT,
 	PREFIX_SEND_FORM as FORM,
-	PREFIX_DIALOG_ADD_TO_JSON as DIALOG_ADD_TO_JSON
+	PREFIX_DIALOG_ADD_TO_JSON as DIALOG_ADD_TO_JSON, PREFIX_DIALOG_ADD_TO_JSON as PREFIX
 } from "../const/prefix";
 import {ICON_TYPES, TYPES} from "../const/alert";
 import DialogAddToJson from "./DialogAddToJson";
@@ -48,11 +48,29 @@ const FormUpload = (state) => {
 
 	const handlerSend = async () => {
 		try {
-			await Api.send(state.form);
+			let errors = {}, data = {};
+
+			state.errors(errors);
+
+			['path', 'name', 'version', 'type', 'npm', 'classes'].map(prop => {
+				if (!state.form[prop]) errors[prop]= `${prop} is required.`;
+				data[prop] = state.form[prop];
+			});
+
+			if (Object.keys(errors).length) {
+				state.errors(errors);
+
+				return false;
+			}
+
+			await Api.toCloud(data);
+
 		} catch (e) {
+			console.error(e);
 			state.showError(e.message || e);
 		}
 	};
+
 	const handlerGetPath = async () => {
 		try {
 			const {path} = await Api.pathOpen();
@@ -76,6 +94,8 @@ const FormUpload = (state) => {
 				variant="outlined"
 				label="File upload"
 				value={state.form.path}
+				helperText={state.form.errors.path || ''}
+				error={Boolean(state.form.errors.path)}
 				InputProps={{
 					startAdornment: (
 						<InputAdornment position="start">
@@ -97,7 +117,10 @@ const FormUpload = (state) => {
 				className={classNames(classes.margin, classes.textField)}
 				variant="outlined"
 				label="Class name"
+				helperText={state.form.errors.name || ''}
+				error={Boolean(state.form.errors.name)}
 				value={state.form.name}
+				onChange={(event) => state.formChangeField('name', event.target.value)}
 			/>
 		</FormControl>
 
@@ -106,7 +129,9 @@ const FormUpload = (state) => {
 				select
 				label="Select type"
 				className={classNames(classes.margin, classes.textField)}
+				helperText={state.form.errors.type || ''}
 				value={state.form.type}
+				error={Boolean(state.form.errors.type)}
 				onChange={(event) => state.formChangeField('type', event.target.value)}
 			>
 				{ranges.map(option => (
@@ -120,6 +145,8 @@ const FormUpload = (state) => {
 		<FormControl fullWidth={true} margin={'normal'}>
 			<TextField
 				id="upload-version"
+				helperText={state.form.errors.version || ''}
+				error={Boolean(state.form.errors.version)}
 				className={classNames(classes.margin, classes.textField)}
 				variant="outlined"
 				label="Version"
@@ -169,6 +196,7 @@ export default connect(
 		connect : state.Connections
 	}),
 	dispatch => ({
+		errors : (data) => dispatch({type :`${FORM}_ERRORS`, data}),
 		openDialogDependecy: (type) => dispatch({type : `${DIALOG_ADD_TO_JSON}_OPEN`, data : type }),
 		formChangeField : (field, value) => dispatch({type : `${FORM}_CHANGE_FIELD`, data : {field, value}}),
 		formAddToJson : (field) => dispatch({type : `${FORM}_ADD_TO_JSON`, data : field}),

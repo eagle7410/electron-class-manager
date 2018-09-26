@@ -10,7 +10,8 @@ const PATHS = {
 };
 
 const QUERY_PATHS = {
-	connected : 'cloud-connected',
+	cloudUpload : '/cloud-upload',
+	connected : '/cloud-connected',
 	appInit  : '/init',
 	pathOpen : '/path-open',
 	pathSave : '/path-save',

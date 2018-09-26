@@ -5,12 +5,13 @@ import {
 import {basename, extname} from 'path'
 
 const initialState = {
-	path    : '',
-	name    : '',
+	path    : '/home/igor/prjs/Gate-API-v1/classes/ErrorHttp.js',
+	name    : 'ErrorHttp',
 	version : '0.0.1',
 	type    : 'unknown',
 	npm     : {},
 	classes : {},
+	errors  : {}
 };
 
 const Upload = (state = initialState, {type, data}) => {
@@ -18,6 +19,12 @@ const Upload = (state = initialState, {type, data}) => {
 	let newState, prop;
 
 	switch (type) {
+		case `${PREFIX}_ERRORS`:
+			return {
+				...state,
+				errors : data
+			};
+
 		case `${DIALOG_ADD_PROP}_ADD`:
 
 			newState = {

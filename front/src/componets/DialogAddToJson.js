@@ -39,7 +39,6 @@ const DialogAddToJson = (state) => {
 				return false;
 			}
 
-
 			state.add(data);
 			state.close();
 

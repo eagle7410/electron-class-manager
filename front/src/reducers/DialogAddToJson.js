@@ -19,6 +19,12 @@ const DialogAddToJson = (state = initialState, {type, data}) => {
 				type : data
 			};
 
+		case `${PREFIX}_ERRORS`:
+			return {
+				...state,
+				errors : data
+			};
+
 		case `${PREFIX}_CLOSE`:
 			return {
 				...initialState,
