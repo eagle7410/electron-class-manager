@@ -6,12 +6,14 @@ import {basename, extname} from 'path'
 
 const initialState = {
 	path    : '/home/igor/prjs/Gate-API-v1/classes/ErrorHttp.js',
+	desc    : '',
 	name    : 'ErrorHttp',
 	version : '0.0.1',
 	type    : 'unknown',
 	npm     : {},
 	classes : {},
-	errors  : {}
+	errors  : {},
+	isLoad  : false
 };
 
 const Upload = (state = initialState, {type, data}) => {
@@ -19,6 +21,18 @@ const Upload = (state = initialState, {type, data}) => {
 	let newState, prop;
 
 	switch (type) {
+		case `${PREFIX}_IS_LOAD_RUN`:
+			return {
+				...state,
+				isLoad : true
+			};
+
+		case `${PREFIX}_IS_LOAD_STOP`:
+			return {
+				...state,
+				isLoad : false
+			};
+
 		case `${PREFIX}_ERRORS`:
 			return {
 				...state,

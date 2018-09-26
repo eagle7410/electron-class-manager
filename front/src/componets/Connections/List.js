@@ -14,7 +14,7 @@ import ActiveYes from '@material-ui/icons/CheckCircle';
 import ActiveNo from '@material-ui/icons/HighlightOff';
 import Connect from '@material-ui/icons/CastConnected';
 import GetConfig from '@material-ui/icons/GetApp';
-
+import LoadAnimation from '../../tools/LoadAnimation'
 import Api from '../../Api'
 
 import {
@@ -36,6 +36,8 @@ const List = (state) => {
 	if (state.store.list.length) {
 
 		const handlerConnection = async (alias) => {
+			state.load();
+
 			try {
 				const {isConnected} = await Api.cloudConnect({alias});
 
@@ -44,10 +46,14 @@ const List = (state) => {
 				state.connected(alias);
 			} catch (e) {
 				state.showError(e.message || e);
+			} finally {
+				state.loadStop();
 			}
-		}
+		};
 
 		const handlerLoadAccessConfig = async (alias) => {
+			state.load();
+
 			try {
 				const {path} = await Api.pathOpen();
 
@@ -59,29 +65,40 @@ const List = (state) => {
 
 			} catch (e) {
 				state.showError(e.message || e);
+			} finally {
+				state.loadStop();
 			}
 		};
 
-		list = state.store.list.map((connect, inx) => {
+		let actions, icon;
 
-			let icon = connect.isInit ? <ActiveYes style={styles.yes} /> : <ActiveNo style={styles.no} />;
+		list = state.store.list.map((connect, inx) => {
+			actions = [
+				<Button variant="contained" color="primary" className={classes.button}
+				        key={`btn_connect_connect_${inx}`}
+				        disabled={!connect.isHasConfig || connect.isInit}
+				        onClick={() => handlerConnection(connect.alias)}
+				>
+					<Connect className={classes.leftIcon} />
+					Connect
+				</Button>,
+				<Button variant="contained" color="primary" className={classes.button}
+				        key={`btn_connect_load_config_${inx}`}
+				        onClick={() => handlerLoadAccessConfig(connect.alias)}
+				>
+					<GetConfig className={classes.leftIcon} />
+					Load access config
+				</Button>
+			];
+
+			if (state.store.isLoad)
+				actions = <LoadAnimation />;
+
+			icon = connect.isInit ? <ActiveYes style={styles.yes} /> : <ActiveNo style={styles.no} />;
 
 			return (
 				<Panel title={<div>{icon} Connect to "{connect.label}"</div>} key={`CONNECT_${inx}`} titleBlue={true} expanded={true}>
-					<Button variant="contained" color="primary" className={classes.button}
-					        disabled={!connect.isHasConfig || connect.isInit}
-					        onClick={() => handlerConnection(connect.alias)}
-					>
-						<Connect className={classes.leftIcon} />
-						Connect
-					</Button>
-					<Button variant="contained" color="primary" className={classes.button}
-
-					        onClick={() => handlerLoadAccessConfig(connect.alias)}
-					>
-						<GetConfig className={classes.leftIcon} />
-						Load access config
-					</Button>
+					{actions}
 				</Panel>
 			);
 		});
@@ -95,6 +112,8 @@ export default connect(
 		store: state.Connections,
 	}),
 	dispatch => ({
+		load      : () => dispatch({type : `${CONNECTION}_IS_LOAD_RUN`}),
+		loadStop  : () => dispatch({type : `${CONNECTION}_IS_LOAD_STOP`}),
 		showError : message => dispatch({
 			type : `${ALERT}_OPEN`,
 			data : {

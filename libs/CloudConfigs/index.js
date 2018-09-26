@@ -19,10 +19,8 @@ class CloudConfigs {
 		return connections.currentDrive.isConnected;
 	}
 
-	static async addToCloud({path, name, version, type, npm, classes}) {
-
-		await connections.currentDrive.addFile({path, name, version, type, npm, classes
-		})
+	static async addToCloud(data) {
+		await connections.currentDrive.addFile(data)
 	}
 
 	static async copyConfig(localPath, alias) {

@@ -3,9 +3,9 @@ import {
 } from '../const/prefix'
 
 const initialState = {
-	list: [],
-	fileTypes: {},
-	errors  : {}
+	isLoad    : false,
+	list      : [],
+	fileTypes : {},
 };
 
 const Connections = (state = initialState, action) => {
@@ -15,15 +15,23 @@ const Connections = (state = initialState, action) => {
 
 	// eslint-disable-next-line
 	switch (action.type) {
-
+		case `${PREFIX}_IS_LOAD_RUN`:
+			return {
+				...state,
+				isLoad: true
+			};
+		case `${PREFIX}_IS_LOAD_STOP`:
+			return {
+				...state,
+				isLoad: false
+			};
 
 		case `${PREFIX}_CONNECTED`:
 			connect = state.list.find(c => c.alias === data);
 			connect.isInit = true;
 
-			return {
-				...state,
-			};
+			return {...state};
+
 		case `${PREFIX}_HAS_CONFIG`:
 			connect = state.list.find(c => c.alias === data);
 			connect.isHasConfig = true;

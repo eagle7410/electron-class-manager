@@ -9,13 +9,13 @@ import Api from "../Api";
 import {
 	PREFIX_ALERT as ALERT,
 	PREFIX_SEND_FORM as FORM,
-	PREFIX_DIALOG_ADD_TO_JSON as DIALOG_ADD_TO_JSON, PREFIX_DIALOG_ADD_TO_JSON as PREFIX
+	PREFIX_DIALOG_ADD_TO_JSON as DIALOG_ADD_TO_JSON,
 } from "../const/prefix";
 import {ICON_TYPES, TYPES} from "../const/alert";
 import DialogAddToJson from "./DialogAddToJson";
 import {withStyles} from "@material-ui/core";
 import {classes} from "../const/styles";
-
+import LoadAnimation from '../tools/LoadAnimation';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import GetPath from '@material-ui/icons/GetApp';
@@ -31,8 +31,6 @@ const FormUpload = (state) => {
 			value,
 			label : value.substring(0, 1).toUpperCase() + value.substring(1)
 		}));
-	const handlerChangeField = (field, ev) =>
-		state.formChangeField(field, ev.target.value);
 
 	const handlerChangeJson = (item, type) => {
 		const newVal = item.updated_src;
@@ -47,12 +45,15 @@ const FormUpload = (state) => {
 	const handlerAddToJson = (field) => state.openDialogDependecy(field);
 
 	const handlerSend = async () => {
+
+		state.load();
+
 		try {
 			let errors = {}, data = {};
 
 			state.errors(errors);
 
-			['path', 'name', 'version', 'type', 'npm', 'classes'].map(prop => {
+			['path', 'name', 'version', 'type', 'npm', 'classes', 'desc'].map(prop => {
 				if (!state.form[prop]) errors[prop]= `${prop} is required.`;
 				data[prop] = state.form[prop];
 			});
@@ -68,6 +69,8 @@ const FormUpload = (state) => {
 		} catch (e) {
 			console.error(e);
 			state.showError(e.message || e);
+		} finally {
+			state.loadStop();
 		}
 	};
 
@@ -156,6 +159,20 @@ const FormUpload = (state) => {
 		</FormControl>
 
 		<FormControl fullWidth={true} margin={'normal'}>
+			<TextField
+				multiline
+				id="upload-version"
+				helperText={state.form.errors.desc || ''}
+				error={Boolean(state.form.errors.desc)}
+				className={classNames(classes.margin, classes.textField)}
+				variant="outlined"
+				label="Descripton"
+				value={state.form.desc}
+				onChange={(event) => state.formChangeField('desc', event.target.value)}
+			/>
+		</FormControl>
+
+		<FormControl fullWidth={true} margin={'normal'}>
 			<Button variant="contained" color="primary" className={classes.button}
 			        onClick={() => handlerAddToJson('npm')}
 			>
@@ -180,12 +197,17 @@ const FormUpload = (state) => {
 			           onDelete={(item) => handlerChangeJson(item, 'classes')}
 			/>
 		</FormControl>
-		<Button variant="contained" color="primary" className={classes.button}
-		        onClick={handlerSend}
-		>
-			Upload
-			<IconToCloud style={{marginLeft: 5}}/>
-		</Button>
+		{
+			!state.form.isLoad
+				? <Button variant="contained" color="primary" className={classes.button}
+				          onClick={() => handlerSend()}
+				>
+					Upload
+					<IconToCloud style={{marginLeft: 5}}/>
+				</Button>
+				: <LoadAnimation />
+		}
+
 		<DialogAddToJson />
 	</Panel>);
 };
@@ -196,6 +218,8 @@ export default connect(
 		connect : state.Connections
 	}),
 	dispatch => ({
+		load     : () => dispatch({type :`${FORM}_IS_LOAD_RUN`}),
+		loadStop : () => dispatch({type :`${FORM}_IS_LOAD_STOP`}),
 		errors : (data) => dispatch({type :`${FORM}_ERRORS`, data}),
 		openDialogDependecy: (type) => dispatch({type : `${DIALOG_ADD_TO_JSON}_OPEN`, data : type }),
 		formChangeField : (field, value) => dispatch({type : `${FORM}_CHANGE_FIELD`, data : {field, value}}),

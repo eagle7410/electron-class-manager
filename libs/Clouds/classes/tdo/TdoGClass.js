@@ -1,4 +1,4 @@
-
+const {extname} = require('path');
 class TdoGClass {
 	static get types () {
 		return {
@@ -7,7 +7,7 @@ class TdoGClass {
 		}
 	}
 
-	constructor({name, version, type, fileId, desc, npm, classes, path}) {
+	constructor({name, version, type, fileId, desc, npm, classes, path, ext}) {
 		if (!Object.values(TdoGClass.types).includes(type)) type = TdoGClass.types.unknown;
 
 		this._name    = name;
@@ -19,6 +19,9 @@ class TdoGClass {
 		this._classes = classes || {};
 		this._desc    = desc || '';
 
+		if (!ext) ext = path ? extname(path) : '';
+
+		this._ext = ext
 	}
 
 	isEqualName(file) {
@@ -33,7 +36,8 @@ class TdoGClass {
 			desc    : this._desc,
 			npm     : this._npm,
 			classes : this._classes,
-			fileId  : this._fileId
+			fileId  : this._fileId,
+			ext     : this._ext
 		};
 	}
 
@@ -46,7 +50,7 @@ class TdoGClass {
 	}
 
 	get fileName () {
-		return `${this._name}_${this._version}`
+		return `${this._name}_${this._version.replace(/\./g, '_')}${this._ext}`;
 	}
 
 	get fileId () {

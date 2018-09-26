@@ -41,9 +41,9 @@ class GoogleFiles extends GoogleFrame {
 		return true;
 	}
 
-	async addFile({path, name, version, type, npm, classes}) {
+	async addFile(info) {
 
-		const file = new TdoGClass({path, name, version, type, npm, classes});
+		const file = new TdoGClass(info);
 
 		if (this._config.isHasEqual(file))
 			throw new Error(`This is file has equal`);
