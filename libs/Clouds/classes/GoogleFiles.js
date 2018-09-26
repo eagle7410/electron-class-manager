@@ -45,6 +45,9 @@ class GoogleFiles extends GoogleFrame {
 
 		const file = new TdoGClass({path, name, version, type, npm, classes});
 
+		if (this._config.isHasEqual(file))
+			throw new Error(`This is file has equal`);
+
 		let data = await this.copyToCloud({
 		  parents : this._parentStore,
 		  ...file.dataForUpload

@@ -9,7 +9,15 @@ class TdoConfig {
 		this._data = data || [];
 	}
 
+	isHasEqual (file) {
+		const equal = this._data.find(f => f.isEqualName(file));
+
+		return Boolean(equal);
+	}
+
 	addFile (file) {
+
+
 		this._data.push(file)
 	}
 

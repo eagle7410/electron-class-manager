@@ -21,6 +21,10 @@ class TdoGClass {
 
 	}
 
+	isEqualName(file) {
+		return this.fileName === file.fileName
+	}
+
 	get dataCreate () {
 		return {
 			name    : this._name,
@@ -37,8 +41,12 @@ class TdoGClass {
 
 		return {
 			pathLocal : this._path,
-			fileName : `${this._name}_${this._version}`
+			fileName : this.fileName
 		};
+	}
+
+	get fileName () {
+		return `${this._name}_${this._version}`
 	}
 
 	get fileId () {
