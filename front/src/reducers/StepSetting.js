@@ -11,7 +11,16 @@ const initialState = {
 	saveDir : 'classes',
 	order: 'asc',
 	orderBy: 'calories',
+	// order: '',
+	// orderBy: '',
 	selected: [],
+	header : [
+		{ id: 'name', numeric: false, disablePadding: true, label: 'Dessert (100g serving)' },
+		{ id: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
+		{ id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
+		{ id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
+		{ id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
+	],
 	data: [
 		createData('Cupcake', 305, 3.7, 67, 4.3),
 		createData('Donut', 452, 25.0, 51, 4.9),
@@ -67,7 +76,27 @@ const initialState = {
 const StepSetting = (state = initialState, action) => {
 	// eslint-disable-next-line
 	switch (action.type) {
-
+		case `${PREFIX}_SET_SELECTED`:
+			return {
+				...state,
+				selected : action.data
+			};
+		case `${PREFIX}_SET_PAGE`:
+			return {
+				...state,
+				page : action.data
+			};
+		case `${PREFIX}_SET_ROWS_ON_PAGE`:
+			return {
+				...state,
+				rowsPerPage : action.data
+			};
+		case `${PREFIX}_SET_ORDER`:
+			return {
+				...state,
+				orderBy : action.data.orderBy,
+				order : action.data.order,
+			};
 	}
 
 	return state;

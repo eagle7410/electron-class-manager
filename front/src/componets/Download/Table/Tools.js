@@ -5,22 +5,10 @@ import React from "react";
 
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import classNames from 'classnames';
-
-let counter = 0;
-
-function desc(a, b, orderBy) {
-	if (b[orderBy] < a[orderBy]) {
-		return -1;
-	}
-	if (b[orderBy] > a[orderBy]) {
-		return 1;
-	}
-	return 0;
-}
+import connect from "react-redux/es/connect/connect";
 
 const toolbarStyles = theme => ({
 	root: {
@@ -47,8 +35,10 @@ const toolbarStyles = theme => ({
 	},
 });
 
-let EnhancedTableToolbar = props => {
-	const { numSelected, classes } = props;
+const EnhancedTableToolbar = state => {
+	const { classes } = state;
+	const { selected } = state.store;
+	const numSelected = selected.length;
 
 	return (
 		<Toolbar
@@ -70,11 +60,7 @@ let EnhancedTableToolbar = props => {
 			<div className={classes.spacer} />
 			<div className={classes.actions}>
 				{numSelected > 0 ? (
-					<Tooltip title="Delete">
-						<IconButton aria-label="Delete">
-							<DeleteIcon />
-						</IconButton>
-					</Tooltip>
+					''
 				) : (
 					<Tooltip title="Filter list">
 						<IconButton aria-label="Filter list">
@@ -87,4 +73,9 @@ let EnhancedTableToolbar = props => {
 	);
 };
 
-export default withStyles(toolbarStyles)(EnhancedTableToolbar);
+export default connect(
+	state => ({
+		store : state.StepSetting,
+	}),
+	dispatch => ({})
+)(withStyles(toolbarStyles)(EnhancedTableToolbar))
