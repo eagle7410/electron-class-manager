@@ -16,8 +16,6 @@ class TdoConfig {
 	}
 
 	addFile (file) {
-
-
 		this._data.push(file)
 	}
 
@@ -30,7 +28,7 @@ class TdoConfig {
 		let data = [];
 		this._data.map(file => data.push(file.dataCreate));
 
-		return JSON.stringify(data);
+		return JSON.stringify(data, null, '\t');
 	}
 
 	get isEmpty() {

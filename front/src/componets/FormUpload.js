@@ -53,10 +53,11 @@ const FormUpload = (state) => {
 
 			state.errors(errors);
 
-			['path', 'name', 'version', 'type', 'npm', 'classes', 'desc'].map(prop => {
-				if (!state.form[prop]) errors[prop]= `${prop} is required.`;
-				data[prop] = state.form[prop];
-			});
+			['path', 'name', 'version', 'type', 'npm', 'classes', 'desc']
+				.map(prop => {
+					if (!state.form[prop]) errors[prop]= `${prop} is required.`;
+					data[prop] = state.form[prop];
+				});
 
 			if (Object.keys(errors).length) {
 				state.errors(errors);

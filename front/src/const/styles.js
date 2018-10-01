@@ -72,6 +72,12 @@ const classes = theme => ({
 	rightIcon: {
 		marginLeft: theme.spacing.unit,
 	},
+	table: {
+		minWidth: 1020,
+	},
+	tableWrapper: {
+		overflowX: 'auto',
+	},
 });
 
 
