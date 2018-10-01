@@ -1,26 +1,15 @@
-import Toolbar from "@material-ui/core/Toolbar/Toolbar";
-import Typography from "@material-ui/core/Typography/Typography";
-import {withStyles} from "@material-ui/core";
 import React from "react";
-
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import { lighten } from '@material-ui/core/styles/colorManipulator';
+import {connect} from 'react-redux';
+import Tooltip from "@material-ui/core/Tooltip/Tooltip";
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from "@material-ui/core/IconButton/IconButton";
+import DeleteIcon from "@material-ui/core/SvgIcon/SvgIcon";
+import {withStyles} from "@material-ui/core";
+import {classes} from "../../../const/styles";
+import {lighten} from "@material-ui/core/styles/colorManipulator";
 import classNames from 'classnames';
-
-let counter = 0;
-
-function desc(a, b, orderBy) {
-	if (b[orderBy] < a[orderBy]) {
-		return -1;
-	}
-	if (b[orderBy] > a[orderBy]) {
-		return 1;
-	}
-	return 0;
-}
+import FilterListIcon from '@material-ui/icons/FilterList';
 
 const toolbarStyles = theme => ({
 	root: {
@@ -47,8 +36,10 @@ const toolbarStyles = theme => ({
 	},
 });
 
-let EnhancedTableToolbar = props => {
-	const { numSelected, classes } = props;
+let EnhancedTableToolbar = state => {
+	const { classes } = state;
+	const { selected } = state.store;
+	const numSelected = selected.length;
 
 	return (
 		<Toolbar
@@ -87,4 +78,11 @@ let EnhancedTableToolbar = props => {
 	);
 };
 
-export default withStyles(toolbarStyles)(EnhancedTableToolbar);
+export default connect(
+	state => ({
+		store : state.StepSetting,
+	}),
+	dispatch => ({
+
+	})
+)(withStyles(classes, { withTheme: true })(EnhancedTableToolbar))

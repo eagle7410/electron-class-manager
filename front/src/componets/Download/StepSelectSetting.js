@@ -8,7 +8,7 @@ import {
 	PREFIX_STEP_SETTINGS as STEP_SETTINGS
 } from '../../const/prefix'
 
-import Table from './Table'
+// import Table_ from './Table_'
 import Grid from "@material-ui/core/Grid/Grid";
 import TextField from "@material-ui/core/TextField/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
@@ -17,6 +17,7 @@ import FormControl from "@material-ui/core/FormControl/FormControl";
 import classNames from 'classnames';
 import GetPath from '@material-ui/icons/GetApp';
 import Button from "@material-ui/core/Button/Button";
+import Table from './Table/Table'
 
 const StepSelectSetting = (state) => {
 	return (

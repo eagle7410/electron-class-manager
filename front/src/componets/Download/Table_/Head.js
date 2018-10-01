@@ -1,10 +1,28 @@
 import React from 'react';
-import TableCell from '@material-ui/core/TableCell';
+import {connect} from 'react-redux';
+
 import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Tooltip from '@material-ui/core/Tooltip';
+
+
+import TableRow from "@material-ui/core/TableRow/TableRow";
+import TableCell from "@material-ui/core/TableCell/TableCell";
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
+import Tooltip from "@material-ui/core/Tooltip/Tooltip";
+
+import {withStyles} from "@material-ui/core";
+import {classes} from "../../../const/styles";
+
+
+function desc(a, b, orderBy) {
+	if (b[orderBy] < a[orderBy]) {
+		return -1;
+	}
+	if (b[orderBy] > a[orderBy]) {
+		return 1;
+	}
+	return 0;
+}
 
 const rows = [
 	{ id: 'name', numeric: false, disablePadding: true, label: 'Dessert (100g serving)' },
@@ -20,7 +38,18 @@ class EnhancedTableHead extends React.Component {
 	};
 
 	render() {
-		const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
+		const { order, orderBy, selected, data } = this.props.store;
+		const numSelected = selected.length;
+		const rowCount = data.length;
+
+		const handleSelectAllClick = event => {
+			// if (event.target.checked) {
+			// 	this.setState(state => ({ selected: state.data.map(n => n.id) }));
+			// 	return;
+			// }
+			// this.setState({ selected: [] });
+		};
+
 
 		return (
 			<TableHead>
@@ -29,7 +58,7 @@ class EnhancedTableHead extends React.Component {
 						<Checkbox
 							indeterminate={numSelected > 0 && numSelected < rowCount}
 							checked={numSelected === rowCount}
-							onChange={onSelectAllClick}
+							onChange={handleSelectAllClick}
 						/>
 					</TableCell>
 					{rows.map(row => {
@@ -62,4 +91,11 @@ class EnhancedTableHead extends React.Component {
 	}
 }
 
-export default EnhancedTableHead;
+export default connect(
+	state => ({
+		store : state.StepSetting,
+	}),
+	dispatch => ({
+
+	})
+)(withStyles(classes, { withTheme: true })(EnhancedTableHead))

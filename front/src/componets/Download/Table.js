@@ -2,8 +2,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 
-import Head from './Table/Head'
-import Tools from './Table/Tools'
+import Head from './Table_/Head'
+import Tools from './Table_/Tools'
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
