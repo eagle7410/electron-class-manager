@@ -21,8 +21,8 @@ class Api {
 	static accessFileSave({alias, path}) {
 		return reqFull(save, QUERY_PATHS.accessFileSave, {path, alias});
 	}
-	static pathOpen () {
-		return reqFull(save, QUERY_PATHS.pathOpen);
+	static pathOpen (data = {}) {
+		return reqFull(save, QUERY_PATHS.pathOpen, data);
 	}
 
 	static pathSave () {

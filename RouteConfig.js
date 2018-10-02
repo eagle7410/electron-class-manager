@@ -43,8 +43,8 @@ const config = [
 		await CloudConfigs.copyConfig(path, alias);
 		Send.ok(res, action);
 	}),
-	route(QUERY_PATHS.pathOpen, async (res, action) => {
-		const path = await FileDialog.open({});
+	route(QUERY_PATHS.pathOpen, async (res, action, data = {}) => {
+		const path = await FileDialog.open(data);
 		Send.ok(res, action, {path});
 	}),
 	route(QUERY_PATHS.pathSave, async (res, action) => {

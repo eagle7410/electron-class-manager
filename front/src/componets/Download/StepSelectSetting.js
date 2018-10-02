@@ -5,10 +5,10 @@ import {withStyles} from "@material-ui/core";
 import {classes} from "../../const/styles";
 import {
 	PREFIX_STEPS as PREFIX,
-	PREFIX_STEP_SETTINGS as STEP_SETTINGS
+	PREFIX_STEP_SETTINGS as STEP_SETTINGS,
+	PREFIX_ALERT as ALERT
 } from '../../const/prefix'
 
-// import Table_ from './Table_'
 import Grid from "@material-ui/core/Grid/Grid";
 import TextField from "@material-ui/core/TextField/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
@@ -18,8 +18,32 @@ import classNames from 'classnames';
 import GetPath from '@material-ui/icons/GetApp';
 import Button from "@material-ui/core/Button/Button";
 import Table from './Table/Table'
+import {ICON_TYPES, TYPES} from "../../const/alert";
+import Api from "../../Api";
 
 const StepSelectSetting = (state) => {
+	const handleNext = () => {
+		// TODO: Back need build npm and classes objects
+		state.handleNext();
+	};
+
+	const handlerSetPathProject = async () => {
+		try {
+			const {path} = await Api.pathOpen({
+				openFile: false,
+				openDirectory : true,
+				filters: [],
+				properties : ['openDirectory']
+			});
+
+			if (!path) return false;
+
+			state.setProjectPath(path);
+		} catch (e) {
+			state.showError(e.message || e);
+		}
+	}
+
 	return (
 		<Grid item md={12} xs={3}>
 			<FormControl fullWidth={true} margin={'normal'}>
@@ -37,7 +61,7 @@ const StepSelectSetting = (state) => {
 							<InputAdornment position="start">
 								<IconButton
 									aria-label="Get path"
-									onClick={() =>alert('Get path')}
+									onClick={() => handlerSetPathProject()}
 								>
 									<GetPath />
 								</IconButton>
@@ -54,8 +78,8 @@ const StepSelectSetting = (state) => {
 					label="Save to folder"
 					helperText={'Save to folder'}
 					error={false}
-					value={'classes'}
-					onChange={(event) => alert('handler folder')}
+					value={state.store.saveDir}
+					onChange={(event) => state.changeSaveDir(event.target.value)}
 				/>
 			</FormControl>
 			<Table />
@@ -71,7 +95,7 @@ const StepSelectSetting = (state) => {
 					<Button
 						variant="contained"
 						color="primary"
-						onClick={state.handleNext}
+						onClick={handleNext}
 						className={classes.button}
 					>Next
 
@@ -89,6 +113,16 @@ export default connect(
 		handleNext : () => dispatch({type : `${PREFIX}_NEXT`}),
 		handleBack : () => dispatch({type : `${PREFIX}_BACK`}),
 		handleReset : () => dispatch({type : `${PREFIX}_RESET`}),
+		setProjectPath : (path) => dispatch({type : `${STEP_SETTINGS}_SET_PATH_PROJECT`, data:path}),
+		changeSaveDir : (dir) => dispatch({type : `${STEP_SETTINGS}_CHANGE_SAVE_DIR`, data:dir}),
+		showError : message => dispatch({
+			type : `${ALERT}_OPEN`,
+			data : {
+				message,
+				showIcon : ICON_TYPES.BAD,
+				type : TYPES.BAD
+			}
+		})
 	})
 )(withStyles(classes, { withTheme: true })(StepSelectSetting))
 

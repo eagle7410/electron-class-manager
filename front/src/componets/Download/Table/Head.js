@@ -17,7 +17,7 @@ const EnhancedTableHead = (state) => {
 
 	const onSelectAllClick = (event) => state.setSelected(
 		event.target.checked
-			? data.map(n => n.id)
+			? data.map(n => n.fileId)
 			: []
 	);
 

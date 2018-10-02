@@ -27,11 +27,12 @@ class Dialog {
 		            showHiddenFiles = false,
 		            title = TITLE_DEFAULT,
 		            filters = FILTERS_DEFAULT,
-		            defaultPath
+		            defaultPath,
+		            properties = []
 	            }) {
 		checkInit();
 
-		return dialog.pathSelectOpen({openFile, openDirectory, multiSelections, showHiddenFiles, title, filters, defaultPath});
+		return dialog.pathSelectOpen({openFile, openDirectory, multiSelections, showHiddenFiles, title, filters, defaultPath, properties});
 	}
 
 	static save ({

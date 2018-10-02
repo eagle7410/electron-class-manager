@@ -51,16 +51,16 @@ const EnhancedTable = state => {
 						{stableSort(data, getSorting(order, orderBy))
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map(n => {
-								const isSelect = selected.includes(n.id);
+								const isSelect = selected.includes(n.fileId);
 
 								return (
 									<TableRow
 										hover
-										onClick={event => handleClick(event, n.id)}
+										onClick={event => handleClick(event, n.fileId)}
 										role="checkbox"
 										aria-checked={isSelect}
 										tabIndex={-1}
-										key={n.id}
+										key={n.fileId}
 										selected={isSelect}
 									>
 										<TableCell padding="checkbox">
@@ -69,10 +69,11 @@ const EnhancedTable = state => {
 										<TableCell component="th" scope="row" padding="none">
 											{n.name}
 										</TableCell>
-										<TableCell numeric>{n.calories}</TableCell>
-										<TableCell numeric>{n.fat}</TableCell>
-										<TableCell numeric>{n.carbs}</TableCell>
-										<TableCell numeric>{n.protein}</TableCell>
+										<TableCell >{n.version}</TableCell>
+										<TableCell >{n.type}</TableCell>
+										<TableCell >{n.desc}</TableCell>
+										<TableCell >{JSON.stringify(n.classes)}</TableCell>
+										<TableCell >{JSON.stringify(n.npm)}</TableCell>
 									</TableRow>
 								);
 							})}

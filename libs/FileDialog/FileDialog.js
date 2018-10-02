@@ -19,6 +19,7 @@ class FileDialog {
 	 * @param {Boolean} showHiddenFiles
 	 * @param {String} title
 	 * @param {string} defaultPath
+	 * @param {[]} properties
 	 * @param {[{name: string, extensions : [String]}]} filters
 	 *
 	 * @returns {Promise<string|null>}
@@ -30,12 +31,13 @@ class FileDialog {
 		showHiddenFiles = false,
 		title = TITLE_DEFAULT,
 		filters = FILTERS_DEFAULT,
-		defaultPath
+		defaultPath,
+        properties = []
 	}) {
 		return new Promise(ok=> {
 			const paths = this._dialog.showOpenDialog(
 				this._window,
-				{openFile, openDirectory, multiSelections, showHiddenFiles, title, filters, defaultPath},
+				{openFile, openDirectory, multiSelections, showHiddenFiles, title, filters, defaultPath, properties},
 			);
 
 			if (!paths || !paths.length) return ok(null);
