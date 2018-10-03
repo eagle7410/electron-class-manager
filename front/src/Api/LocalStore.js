@@ -1,5 +1,7 @@
+/* globals localStorage*/
 const STORE_LABEL = 'store';
-const store = localStorage;
+
+const store = localStorage || null;
 
 class LocalStore {
 	constructor (name) {

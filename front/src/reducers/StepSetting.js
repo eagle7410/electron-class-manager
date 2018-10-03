@@ -5,6 +5,17 @@ function createData(name, calories, fat, carbs, protein) {
 	counter += 1;
 	return { id: counter, name, calories, fat, carbs, protein };
 }
+// TODO: Back clear
+const defVersion = '0.0.1';
+const fileItem = (fileId, name, classes ={}, version = defVersion, npm = {}, type = 'node') => ({
+	name,
+	fileId,
+	classes,
+	version,
+	npm,
+	type,
+	desc : `Description ${name}@${version}`
+});
 
 const initialState = {
 	pathProject : '',
@@ -21,36 +32,13 @@ const initialState = {
 		{ id: 'npm', numeric: false, disablePadding: false, label: 'Npm dependencies' },
 	],
 	data: [
-		{
-			"name": "ErrorHttp",
-			"version": "0.0.1",
-			"type": "node",
-			"desc": "Extens error for has specified handler.\nExtens error for has specified handler.\nExtens error for has specified handler.",
-			"npm": {},
-			"classes": {},
-			"fileId": "1nNJqJMinkwj2miZN2989dhbXAkl5dwg4",
-			"ext": ".js"
-		},
-		{
-			"name": "ErrorValidate",
-			"version": "0.0.1",
-			"type": "node",
-			"desc": "Extends class error for special mark.",
-			"npm": {},
-			"classes": {},
-			"fileId": "12NQaNGTZQR84DL1hofI7ftHspkddpY-a",
-			"ext": ".js"
-		},
-		{
-			"name": "ErrorDatabase",
-			"version": "0.0.1",
-			"type": "node",
-			"desc": "Extends class error for special mark.",
-			"npm": {},
-			"classes": {},
-			"fileId": "1HTfH2UcxVZRt9UL4XBJJJDio8wsLniFQ",
-			"ext": ".js"
-		}
+		fileItem('1nNJqJMinkwj2miZN2989dhbXAkl5dwg4','ErrorHttp'),
+		fileItem('12NQaNGTZQR84DL1hofI7ftHspkddpY-a','ErrorValidate'),
+		fileItem('1HTfH2UcxVZRt9UL4XBJJJDio8wsLniFQ','ErrorDatabase'),
+		fileItem('id1','Model', {ErrorDatabase : defVersion, ErrorValidate: defVersion}),
+		fileItem('id2','Controller', {Model : defVersion, ErrorHttp: defVersion}),
+		fileItem('id3','ErrorHttp', {}, '0.0.2'),
+		fileItem('id4','Controller', {Model : defVersion, ErrorHttp: '0.0.2'}, '0.0.2'),
 	],
 	page: 0,
 	rowsPerPage: 5,
@@ -96,7 +84,7 @@ const StepSetting = (state = initialState, action) => {
 	return state;
 };
 
-export {StepSetting};
+export {StepSetting, initialState};
 
 
 

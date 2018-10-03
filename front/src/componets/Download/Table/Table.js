@@ -12,30 +12,38 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Head from './Head'
 import Tools from './Tools'
 import {PREFIX_STEP_SETTINGS as PREFIX} from "../../../const/prefix";
+import {unique} from '../../../tools/helperArray'
 
 const EnhancedTable = state => {
 	const { classes } = state;
 	const { data, order, orderBy, selected, rowsPerPage, page } = state.store;
 	const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
-	const handleClick = (event, id) => {
-		const selectedIndex = selected.indexOf(id);
-		let newSelected = [];
+	const addDependency = (classes) => {
+		let result = [];
 
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1));
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1));
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(
-				selected.slice(0, selectedIndex),
-				selected.slice(selectedIndex + 1),
-			);
+		for(let [name, version] of Object.entries(classes) ) {
+			let file = data.find(f => f.name === name && f.version === version);
+
+			if (!file) continue;
+
+			result.push(file.fileId, ...addDependency(file.classes));
 		}
 
-		state.setSelected(newSelected);
+		return result;
+	};
+
+	const handleClick = (event, id, classes) => {
+		const selectedIndex = selected.indexOf(id);
+		let newSelected = [...selected];
+
+		if (selectedIndex === -1) {
+			newSelected.push(id,...addDependency(classes));
+		} else {
+			newSelected.splice(selectedIndex, 1);
+		}
+
+		state.setSelected(unique(newSelected));
 	};
 
 	const handleChangeRowsPerPage = (event) => state.setRowsOnPage(event.target.value);
@@ -56,7 +64,7 @@ const EnhancedTable = state => {
 								return (
 									<TableRow
 										hover
-										onClick={event => handleClick(event, n.fileId)}
+										onClick={event => handleClick(event, n.fileId, n.classes)}
 										role="checkbox"
 										aria-checked={isSelect}
 										tabIndex={-1}

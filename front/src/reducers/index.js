@@ -8,9 +8,11 @@ import {Upload} from './Upload'
 import {DialogAddToJson} from './DialogAddToJson'
 import {Steps} from './Steps'
 import {StepSetting} from './StepSetting'
+import {StepResult} from './StepResult'
 
 const reducer = combineReducers({
 	routing: routerReducer,
+	StepResult,
 	StepSetting,
 	Steps,
 	DialogAddToJson,
