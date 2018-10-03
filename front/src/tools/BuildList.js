@@ -7,11 +7,11 @@ class BuildList {
 	set list (list) {
 		let buffer;
 
-		for(let {fileId, npm, name, version} of list ) {
+		for(let {fileId, npm, name, version, classes} of list ) {
 			name    = name.trim();
 			version = version.trim();
 
-			this._addFile({fileId, name, version});
+			this._addFile({fileId, name, version, classes});
 
 			for(let [moduleName, moduleVersion] of Object.entries(npm) ) {
 				moduleName    = moduleName.trim();
@@ -45,14 +45,16 @@ class BuildList {
 	init () {
 		this._npm   = {};
 		this._files = [];
+
+		return this;
 	}
 
 	removeFileByFileId (fileId) {
 		this._files = this._files.filter(file => file.fileId !== fileId);
 	}
 
-	_addFile({fileId, name, version}) {
-		this._files.push({fileId, name, version});
+	_addFile({fileId, name, version, classes}) {
+		this._files.push({fileId, name, version, classes});
 	}
 
 	get state () {
@@ -64,7 +66,8 @@ class BuildList {
 		}
 	}
 	get problems () {
-		let problems = [], buffers = {};
+		let problems = [],
+			buffers = {};
 
 		for(let [moduleName, moduleVersion] of Object.entries(this._npm) )
 			if(Array.isArray(moduleVersion))
@@ -78,7 +81,7 @@ class BuildList {
 			.map(([name]) => name);
 
 		if (duplicates.length)
-			problems.push({message : `Classes ${duplicates.join(', ')} have different version`});
+			problems.push({message : `Classes ${duplicates.map(cl => `"${cl}"`).join(', ')} have different version`});
 
 		if(this.isEmptyFiles)
 			problems.push({message : `File list empty`});

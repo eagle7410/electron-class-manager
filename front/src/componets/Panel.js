@@ -15,12 +15,12 @@ const Panel = (state) => {
 	let style = {};
 
 	if (state.titleBlue)
-		style = {background: BG_COLOR_BLUE, color: COLOR_WHITE};
+		style = {background: BG_COLOR_BLUE, color: COLOR_WHITE, width: '100%'};
 
 	return (
 		<ExpansionPanel {...props} >
 			<ExpansionPanelSummary style={style}>
-				<h2>{state.title}</h2>
+				<h3>{state.title}</h3>
 			</ExpansionPanelSummary>
 			<ExpansionPanelDetails>
 				<div>{state.children}</div>

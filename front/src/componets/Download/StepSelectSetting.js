@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {connect} from 'react-redux';
 import {withStyles} from "@material-ui/core";
@@ -6,6 +5,7 @@ import {classes} from "../../const/styles";
 import {
 	PREFIX_STEPS as PREFIX,
 	PREFIX_STEP_SETTINGS as STEP_SETTINGS,
+	PREFIX_STEP_RESULT as STEP_RESULT,
 	PREFIX_ALERT as ALERT
 } from '../../const/prefix'
 
@@ -22,8 +22,16 @@ import {ICON_TYPES, TYPES} from "../../const/alert";
 import Api from "../../Api";
 
 const StepSelectSetting = (state) => {
+	const {selected, data} = state.store;
+
 	const handleNext = () => {
-		// TODO: Back need build npm and classes objects
+		let list = [];
+
+		for(let file of data )
+			if (selected.includes(file.fileId))
+				list.push(file);
+
+		state.setSelectedList(list);
 		state.handleNext();
 	};
 
@@ -85,11 +93,7 @@ const StepSelectSetting = (state) => {
 			<Table />
 			<div className={classes.actionsContainer} style={{marginTop: 10}}>
 				<div>
-					<Button
-						disabled={true}
-						onClick={state.handleBack}
-						className={classes.button}
-					>
+					<Button disabled={true} className={classes.button}>
 						Back
 					</Button>
 					<Button
@@ -111,8 +115,7 @@ export default connect(
 	}),
 	dispatch => ({
 		handleNext : () => dispatch({type : `${PREFIX}_NEXT`}),
-		handleBack : () => dispatch({type : `${PREFIX}_BACK`}),
-		handleReset : () => dispatch({type : `${PREFIX}_RESET`}),
+		setSelectedList: (list) => dispatch({type : `${STEP_RESULT}_INIT`, data: list}),
 		setProjectPath : (path) => dispatch({type : `${STEP_SETTINGS}_SET_PATH_PROJECT`, data:path}),
 		changeSaveDir : (dir) => dispatch({type : `${STEP_SETTINGS}_CHANGE_SAVE_DIR`, data:dir}),
 		showError : message => dispatch({

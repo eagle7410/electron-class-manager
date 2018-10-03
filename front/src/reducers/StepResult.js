@@ -9,22 +9,19 @@ const StepResult = (state = builder.state, action = {}) => {
 	switch (type) {
 		case `${PREFIX}_INIT`:
 
-			builder.init();
-
-			builder.list = data.list;
-			builder.npm  = data.npm;
+			builder.init().list = data;
 
 			return builder.state;
 
 		case `${PREFIX}_MOVE_FILE`:
 
-			builder.removeFileByFileId(data.fileId);
+			builder.removeFileByFileId(data);
 
 			return builder.state;
 
 		case `${PREFIX}_CHANGE_NPM`:
 
-			builder.npm = data.npm;
+			builder.npm = data;
 
 			return builder.state;
 
