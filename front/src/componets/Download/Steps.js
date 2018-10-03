@@ -32,7 +32,7 @@ const Steps = (state) => {
 	const { activeStep } = state.store;
 
 	return (
-		<div className={classes.root}>
+		<div >
 			<Stepper activeStep={activeStep} orientation="vertical">
 				{steps.map((label, index) => {
 					return (

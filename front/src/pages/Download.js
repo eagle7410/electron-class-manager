@@ -6,9 +6,9 @@ const Download = () => {
 	return (
 		<div>
 			<h1>Page "From cloud"</h1>
-			<Grid container spacing={24}>
+			{/*<Grid container spacing={24}>*/}
 				<Steps />
-			</Grid>
+			{/*</Grid>*/}
 		</div>
 	);
 };

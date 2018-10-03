@@ -23,6 +23,10 @@ const route = (route, handler, method) => ({
 });
 
 const config = [
+	route(QUERY_PATHS.cloudDownload, async (res, action, data) => {
+		const report = await CloudConfigs.loadFromCloud(data);
+		Send.ok(res, action, {report});
+	}),
 	route(QUERY_PATHS.cloudUpload, async (res, action, data) => {
 		await CloudConfigs.addToCloud(data);
 		Send.ok(res, action);

@@ -9,9 +9,11 @@ import {DialogAddToJson} from './DialogAddToJson'
 import {Steps} from './Steps'
 import {StepSetting} from './StepSetting'
 import {StepResult} from './StepResult'
+import {StepReport} from './StepReport'
 
 const reducer = combineReducers({
 	routing: routerReducer,
+	StepReport,
 	StepResult,
 	StepSetting,
 	Steps,

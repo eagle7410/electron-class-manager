@@ -13,12 +13,12 @@ import {ICON_TYPES, TYPES} from "./const/alert";
 import {
 PREFIX_CONNECTION as CONNECTION,
 PREFIX_ALERT as ALERT,
-PREFIX_EVENT_ROOM as EVENT_ROOM
 } from "./const/prefix";
+
 import {
 	Connections,
-	Listeners,
-	Emitter
+	Upload,
+	Download
 } from './pages'
 
 import {classes} from './const/styles'
@@ -62,8 +62,8 @@ class App extends  Component {
 					<Switch>
 						<Route path="/" exact component={Connections}/>
 						<Route path="/connections"  component={Connections}/>
-						<Route path="/upload"  component={Emitter}/>
-						<Route path="/download"  component={Listeners}/>
+						<Route path="/upload"  component={Upload}/>
+						<Route path="/download"  component={Download}/>
 					</Switch>
 				</main>
 				<Alert/>

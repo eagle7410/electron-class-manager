@@ -22,10 +22,18 @@ import {ICON_TYPES, TYPES} from "../../const/alert";
 import Api from "../../Api";
 
 const StepSelectSetting = (state) => {
-	const {selected, data} = state.store;
+	const {selected, data, pathProject, saveDir} = state.store;
 
 	const handleNext = () => {
-		let list = [];
+		let list = [], errors = {};
+
+		state.stepError(errors);
+
+		if (!pathProject) errors.pathProject = 'Field "path project" is reqired';
+		if (!saveDir) errors.saveDir = 'Field "save dir" is reqired';
+
+		if (Object.keys(errors).length)
+			return state.stepError(errors);
 
 		for(let file of data )
 			if (selected.includes(file.fileId))
@@ -50,7 +58,7 @@ const StepSelectSetting = (state) => {
 		} catch (e) {
 			state.showError(e.message || e);
 		}
-	}
+	};
 
 	return (
 		<Grid item md={12} xs={3}>
@@ -85,7 +93,7 @@ const StepSelectSetting = (state) => {
 					variant="outlined"
 					label="Save to folder"
 					helperText={'Save to folder'}
-					error={false}
+					error={Boolean(state.store.errors['saveDir'])}
 					value={state.store.saveDir}
 					onChange={(event) => state.changeSaveDir(event.target.value)}
 				/>
@@ -101,19 +109,21 @@ const StepSelectSetting = (state) => {
 						color="primary"
 						onClick={handleNext}
 						className={classes.button}
-					>Next
-
+					>
+						Next
 					</Button>
 				</div>
 			</div>
 		</Grid>
 	);
 };
+
 export default connect(
 	state => ({
 		store : state.StepSetting
 	}),
 	dispatch => ({
+		stepError : (data) => dispatch({type : `${STEP_SETTINGS}_SET_ERRORS`, data}),
 		handleNext : () => dispatch({type : `${PREFIX}_NEXT`}),
 		setSelectedList: (list) => dispatch({type : `${STEP_RESULT}_INIT`, data: list}),
 		setProjectPath : (path) => dispatch({type : `${STEP_SETTINGS}_SET_PATH_PROJECT`, data:path}),

@@ -1,14 +1,17 @@
 const utilPath = require('path');
 const fsep = require('../fsep');
+const NpmMixer = require('../NpmMixer');
 const Clouds = require('../Clouds');
 const CloudConnections = require('../Clouds/CloudConnections');
 const TdoConfigs = require('./TdoConfigs');
+
 const {
 	PATHS
 } = require('../../constants');
 
 const connections = new CloudConnections;
-const config = new TdoConfigs;
+const config      = new TdoConfigs;
+const npmMixer    = new NpmMixer;
 
 class CloudConfigs {
 	static async connected(alias) {
@@ -19,6 +22,39 @@ class CloudConfigs {
 		return connections.currentDrive.isConnected;
 	}
 
+	static async loadFromCloud({pathProject, saveDir, files, npm}) {
+		let report = ['Run download'];
+
+		const baseDir = `${pathProject}/${saveDir}`;
+
+		try {
+
+			if (!fsep.pathExists(baseDir))
+				await fsep.mkdir(baseDir);
+
+			report.push('Base folder exists -> OK');
+
+			for (let {name, ext, fileId} of files) {
+
+				await connections.currentDrive.copyFromCloudByFileId({
+					fileId,
+					pathLocal : `${baseDir}/${name}${ext}`
+				});
+
+				report.push(`    Load file ${name} --> OK`);
+			}
+
+			report.push(...(await npmMixer.init({npm, baseDir: pathProject}).writeMix()));
+
+		} catch (e) {
+
+			console.error(e);
+			report.push(`Has error ${e.message || e}`);
+		}
+
+		return report;
+
+	}
 	static async addToCloud(data) {
 		await connections.currentDrive.addFile(data)
 	}

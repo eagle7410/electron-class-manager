@@ -1,4 +1,7 @@
-import {PREFIX_STEP_SETTINGS as PREFIX} from '../const/prefix'
+import {
+	PREFIX_STEP_SETTINGS as PREFIX,
+	PREFIX_STEPS as STEPS
+} from '../const/prefix'
 
 let counter = 0;
 function createData(name, calories, fat, carbs, protein) {
@@ -7,17 +10,19 @@ function createData(name, calories, fat, carbs, protein) {
 }
 // TODO: Back clear
 const defVersion = '0.0.1';
-const fileItem = (fileId, name, classes ={}, version = defVersion, npm = {}, type = 'node') => ({
+const fileItem = (fileId, name, classes ={}, version = defVersion, npm = {}, type = 'node', ext='.js') => ({
 	name,
 	fileId,
 	classes,
 	version,
 	npm,
 	type,
-	desc : `Description ${name}@${version}`
+	desc : `Description ${name}@${version}`,
+	ext
 });
 
 const initialState = {
+	isLoad : false,
 	pathProject : '',
 	saveDir : 'classes',
 	order: 'asc',
@@ -35,10 +40,6 @@ const initialState = {
 		fileItem('1nNJqJMinkwj2miZN2989dhbXAkl5dwg4','ErrorHttp'),
 		fileItem('12NQaNGTZQR84DL1hofI7ftHspkddpY-a','ErrorValidate'),
 		fileItem('1HTfH2UcxVZRt9UL4XBJJJDio8wsLniFQ','ErrorDatabase'),
-		fileItem('id1','Model', {ErrorDatabase : defVersion, ErrorValidate: defVersion}),
-		fileItem('id2','Controller', {Model : defVersion, ErrorHttp: defVersion}),
-		fileItem('id3','ErrorHttp', {}, '0.0.2'),
-		fileItem('id4','Controller', {Model : defVersion, ErrorHttp: '0.0.2'}, '0.0.2'),
 	],
 	page: 0,
 	rowsPerPage: 5,
@@ -48,6 +49,11 @@ const initialState = {
 const StepSetting = (state = initialState, action) => {
 	// eslint-disable-next-line
 	switch (action.type) {
+		case `${PREFIX}_SET_ERRORS`:
+			return {
+				...state,
+				errors : action.data
+			};
 		case `${PREFIX}_SET_SELECTED`:
 			return {
 				...state,
@@ -79,6 +85,8 @@ const StepSetting = (state = initialState, action) => {
 				orderBy : action.data.orderBy,
 				order : action.data.order,
 			};
+		case `${STEPS}_RESET`:
+			return {...initialState};
 	}
 
 	return state;

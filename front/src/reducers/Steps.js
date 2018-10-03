@@ -1,7 +1,7 @@
 import {PREFIX_STEPS as PREFIX} from '../const/prefix'
 
 const initialState = {
-	activeStep : 1,
+	activeStep : 0,
 	countStep : 3
 };
 

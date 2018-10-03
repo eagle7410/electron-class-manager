@@ -91,7 +91,7 @@ const List = (state) => {
 				</Button>
 			];
 
-			if (state.store.isLoad)
+			if (state.store.stateLoad)
 				actions = <LoadAnimation />;
 
 			icon = connect.isInit ? <ActiveYes style={styles.yes} /> : <ActiveNo style={styles.no} />;

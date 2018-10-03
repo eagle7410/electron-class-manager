@@ -1,9 +1,9 @@
 import Connections from './Connections'
-import Listeners from './Download'
-import Emitter from './Upload'
+import Download from './Download'
+import Upload from './Upload'
 
 export {
 	Connections,
-	Emitter,
-	Listeners
+	Upload,
+	Download
 }

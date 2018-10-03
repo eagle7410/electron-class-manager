@@ -7,11 +7,11 @@ class BuildList {
 	set list (list) {
 		let buffer;
 
-		for(let {fileId, npm, name, version, classes} of list ) {
+		for(let {fileId, npm, name, version, classes, ext} of list ) {
 			name    = name.trim();
 			version = version.trim();
 
-			this._addFile({fileId, name, version, classes});
+			this._addFile({fileId, name, version, classes, ext});
 
 			for(let [moduleName, moduleVersion] of Object.entries(npm) ) {
 				moduleName    = moduleName.trim();
@@ -37,24 +37,31 @@ class BuildList {
 					: [this._npm[moduleName]];
 
 				this._npm[moduleName] = [...buffer, moduleVersion];
-
 			}
 		}
 	}
 
 	init () {
-		this._npm   = {};
-		this._files = [];
+		this._npm    = {};
+		this._files  = [];
+		this._isLoad = false;
 
 		return this;
 	}
+
 
 	removeFileByFileId (fileId) {
 		this._files = this._files.filter(file => file.fileId !== fileId);
 	}
 
-	_addFile({fileId, name, version, classes}) {
-		this._files.push({fileId, name, version, classes});
+	_addFile({fileId, name, version, classes, ext}) {
+		this._files.push({fileId, name, version, classes, ext});
+	}
+
+	stateLoad (isStateLoad) {
+		this._isLoad = isStateLoad;
+
+		return this.state;
 	}
 
 	get state () {
@@ -62,7 +69,8 @@ class BuildList {
 			problems : this.problems,
 			isHasProblems : this.isHasProblems,
 			files : this.files,
-			npm : this.npm
+			npm : this.npm,
+			isLoad : this._isLoad
 		}
 	}
 	get problems () {

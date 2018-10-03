@@ -199,7 +199,7 @@ const FormUpload = (state) => {
 			/>
 		</FormControl>
 		{
-			!state.form.isLoad
+			!state.form.stateLoad
 				? <Button variant="contained" color="primary" className={classes.button}
 				          onClick={() => handlerSend()}
 				>
