@@ -4,7 +4,7 @@ const utilPath  = require('path');
 const {google}  = require('googleapis');
 const {
 	CLOUD_DEFAULT_ROOT_FOLDER_NAME,
-} = require('../../../runtime/constants');
+} = require('../../../constants');
 
 class GoogleFrame extends CloudInterface {
 	constructor () {

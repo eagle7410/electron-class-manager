@@ -1,8 +1,7 @@
 import {PREFIX_STEP_RESULT as PREFIX, PREFIX_STEPS as STEPS} from '../const/prefix'
 import BuildList from '../tools/BuildList'
 
-
-const builder = new BuildList;
+const builder = new BuildList();
 
 const StepResult = (state = builder.state, action = {}) => {
 	const {type, data} = action;

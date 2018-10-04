@@ -4,12 +4,12 @@ const TdoGClass = require('./tdo/TdoGClass');
 const {
 	CLOUD_FILE_NAME_CONFIG,
 	CLOUD_FILE_NAME_CLASS_STORE
-} = require('../../../runtime/constants');
+} = require('../../../constants');
 
 class GoogleFiles extends GoogleFrame {
 	constructor () {
 		super();
-		this._config = new TdoConfig;
+		this._config = new TdoConfig();
 		this._configFileId = null;
 		this._storeId = null;
 	}
