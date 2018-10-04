@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {connect} from 'react-redux';
 import ListItem from "@material-ui/core/ListItem/ListItem";
@@ -12,7 +11,6 @@ import Panel from '../../Panel'
 import {PREFIX_STEP_RESULT as RESULT} from "../../../const/prefix";
 
 const FileList = (state) => {
-	const {classes} = state;
 	const {files} = state.store;
 
 	return (
@@ -39,23 +37,6 @@ const FileList = (state) => {
 				}
 				</List>
 			</Panel>
-			{/*<h3>File list</h3>*/}
-			{/*<List component="nav">*/}
-				{/*{files.sort((a, b) => a.name.localeCompare(b.name)).map(({fileId, name, version, classes}) => {*/}
-					{/*return (*/}
-						{/*<ListItem key={`file_${fileId}`}>*/}
-							{/*<ListItemIcon>*/}
-								{/*<IconButton aria-label="Filter list" key={`move_file_${fileId}`}*/}
-								            {/*onClick={() => state.moveFile(fileId)}*/}
-								{/*>*/}
-									{/*<Icon />*/}
-								{/*</IconButton>*/}
-							{/*</ListItemIcon>*/}
-							{/*<ListItemText >{name}@{version}</ListItemText>*/}
-						{/*</ListItem>*/}
-					{/*);*/}
-				{/*})}*/}
-			{/*</List>*/}
 		</div>
 	);
 };

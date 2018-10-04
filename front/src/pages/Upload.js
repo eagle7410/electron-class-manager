@@ -5,19 +5,16 @@ import {withStyles} from "@material-ui/core";
 import {classes} from "../const/styles";
 import FormUpload from '../componets/FormUpload'
 
-const Upload = (state) => {
-
-	return (
-		<div>
-			<h1>Page "To cloud" </h1>
-			<Grid container spacing={24}>
-				<Grid item md={12} xs={12}>
-					<FormUpload />
-				</Grid>
+const Upload = () => (
+	<div>
+		<h1>Page "To cloud" </h1>
+		<Grid container spacing={24}>
+			<Grid item md={12} xs={12}>
+				<FormUpload />
 			</Grid>
-		</div>
-	);
-};
+		</Grid>
+	</div>
+);
 
 export default connect(
 	state => ({

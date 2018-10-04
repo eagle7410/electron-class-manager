@@ -6,7 +6,8 @@ import {withStyles} from "@material-ui/core";
 import {classes} from "../../const/styles";
 import {
 	PREFIX_ALERT as ALERT,
-	PREFIX_CONNECTION as CONNECTION
+	PREFIX_CONNECTION as CONNECTION,
+	PREFIX_STEP_SETTINGS as SETTINGS
 } from "../../const/prefix";
 
 import {ICON_TYPES, TYPES} from "../../const/alert";
@@ -39,11 +40,14 @@ const List = (state) => {
 			state.load();
 
 			try {
-				const {isConnected} = await Api.cloudConnect({alias});
+				const {isConnected, files} = await Api.cloudConnect({alias});
 
 				if (!isConnected) new Error(`Problem with connect`);
 
+				state.setFiles(files);
+
 				state.connected(alias);
+
 			} catch (e) {
 				state.showError(e.message || e);
 			} finally {
@@ -122,7 +126,8 @@ export default connect(
 				type : TYPES.BAD
 			}
 		}),
-		hasConfig : (alias) => dispatch({type : `${CONNECTION}_HAS_CONFIG`, data: alias}),
-		connected : (alias) => dispatch({type : `${CONNECTION}_CONNECTED`, data: alias}),
+		setFiles  : (data) => dispatch({type : `${SETTINGS}_SET_FILES`, data}),
+		hasConfig : (data) => dispatch({type : `${CONNECTION}_HAS_CONFIG`, data}),
+		connected : (data) => dispatch({type : `${CONNECTION}_CONNECTED`, data}),
 	})
 )(withStyles(classes, { withTheme: true })(List))

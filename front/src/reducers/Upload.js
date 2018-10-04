@@ -5,11 +5,11 @@ import {
 import {basename, extname} from 'path'
 
 const initialState = {
-	path    : '/home/igor/prjs/Gate-API-v1/classes/ErrorHttp.js',
+	path    : '',
 	desc    : '',
-	name    : 'ErrorHttp',
+	name    : '',
 	version : '0.0.1',
-	type    : 'unknown',
+	type    : 'node',
 	npm     : {},
 	classes : {},
 	errors  : {},
@@ -18,7 +18,7 @@ const initialState = {
 
 const Upload = (state = initialState, {type, data}) => {
 
-	let newState, prop;
+	let newState;
 
 	switch (type) {
 		case `${PREFIX}_IS_LOAD_RUN`:
@@ -58,9 +58,8 @@ const Upload = (state = initialState, {type, data}) => {
 				[field] : value
 			};
 
-			if (field === 'path') {
-				newState.name = basename(value, extname(value))
-			}
+			if (field === 'path')
+				newState.name = basename(value, extname(value));
 
 			return newState;
 

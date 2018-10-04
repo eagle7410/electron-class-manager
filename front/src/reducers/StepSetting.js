@@ -3,24 +3,6 @@ import {
 	PREFIX_STEPS as STEPS
 } from '../const/prefix'
 
-let counter = 0;
-function createData(name, calories, fat, carbs, protein) {
-	counter += 1;
-	return { id: counter, name, calories, fat, carbs, protein };
-}
-// TODO: Back clear
-const defVersion = '0.0.1';
-const fileItem = (fileId, name, classes ={}, version = defVersion, npm = {}, type = 'node', ext='.js') => ({
-	name,
-	fileId,
-	classes,
-	version,
-	npm,
-	type,
-	desc : `Description ${name}@${version}`,
-	ext
-});
-
 const initialState = {
 	isLoad : false,
 	pathProject : '',
@@ -36,60 +18,64 @@ const initialState = {
 		{ id: 'classes', numeric: false, disablePadding: false, label: 'Classes dependencies' },
 		{ id: 'npm', numeric: false, disablePadding: false, label: 'Npm dependencies' },
 	],
-	data: [
-		fileItem('1nNJqJMinkwj2miZN2989dhbXAkl5dwg4','ErrorHttp'),
-		fileItem('12NQaNGTZQR84DL1hofI7ftHspkddpY-a','ErrorValidate'),
-		fileItem('1HTfH2UcxVZRt9UL4XBJJJDio8wsLniFQ','ErrorDatabase'),
-	],
+	data: [],
 	page: 0,
 	rowsPerPage: 5,
 	errors : {}
 };
 
-const StepSetting = (state = initialState, action) => {
-	// eslint-disable-next-line
-	switch (action.type) {
+const StepSetting = (state = initialState, action = {}) => {
+	const {data, type} = action;
+
+	switch (type) {
+		case `${PREFIX}_ADD_FILE`:
+			return {
+				...state,
+				data : state.data.push(data)
+			};
+		case `${PREFIX}_SET_FILES`:
+			return {...state,data};
 		case `${PREFIX}_SET_ERRORS`:
 			return {
 				...state,
-				errors : action.data
+				errors : data
 			};
 		case `${PREFIX}_SET_SELECTED`:
 			return {
 				...state,
-				selected : action.data
+				selected : data
 			};
 		case `${PREFIX}_CHANGE_SAVE_DIR`:
 			return {
 				...state,
-				saveDir : action.data
+				saveDir : data
 			};
 		case `${PREFIX}_SET_PATH_PROJECT`:
 			return {
 				...state,
-				pathProject : action.data
+				pathProject : data
 			};
 		case `${PREFIX}_SET_PAGE`:
 			return {
 				...state,
-				page : action.data
+				page : data
 			};
 		case `${PREFIX}_SET_ROWS_ON_PAGE`:
 			return {
 				...state,
-				rowsPerPage : action.data
+				rowsPerPage : data
 			};
 		case `${PREFIX}_SET_ORDER`:
 			return {
 				...state,
-				orderBy : action.data.orderBy,
-				order : action.data.order,
+				...data,
 			};
 		case `${STEPS}_RESET`:
 			return {...initialState};
-	}
 
-	return state;
+		default:
+			return state;
+	}
 };
 
 export {StepSetting, initialState};

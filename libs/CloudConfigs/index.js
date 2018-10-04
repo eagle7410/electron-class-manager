@@ -85,6 +85,10 @@ class CloudConfigs {
 		return true;
 	}
 
+	static get filesConfigObj() {
+		return connections.filesConfigObj || [];
+	}
+
 	static get connectionList () {
 		return connections.connectionList;
 	}

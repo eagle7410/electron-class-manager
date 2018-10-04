@@ -15,6 +15,10 @@ class CloudConnections {
 		return this.currentDrive.isConnected;
 	}
 
+	get filesConfigObj () {
+		return this.currentDrive.configObj;
+	}
+
 	get connectionList () {
 		return Object.values(this._connection)
 			.map(conn => conn.config)

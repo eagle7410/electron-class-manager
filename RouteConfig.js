@@ -28,12 +28,16 @@ const config = [
 		Send.ok(res, action, {report});
 	}),
 	route(QUERY_PATHS.cloudUpload, async (res, action, data) => {
-		await CloudConfigs.addToCloud(data);
-		Send.ok(res, action);
+		const file = await CloudConfigs.addToCloud(data);
+		Send.ok(res, action, {file});
 	}),
 	route(QUERY_PATHS.connected, async (res, action, {alias}) => {
 		const isConnected = await CloudConfigs.connected(alias);
-		Send.ok(res, action, {isConnected});
+		let files = [];
+
+		if(isConnected) files = CloudConfigs.filesConfigObj;
+
+		Send.ok(res, action, {isConnected, files});
 	}),
 	route(QUERY_PATHS.appInit, async (res, action) => {
 		await CloudConfigs.init();

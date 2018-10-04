@@ -5,10 +5,11 @@ const initialState = {
 };
 
 const StepReport = (state = initialState, action) => {
+	const {type, data} = action || {};
 
-	switch (action.type) {
+	switch (type) {
 		case `${PREFIX}_SET_REPORT`:
-			return {...state, report: action.data}
+			return {...state, report: data};
 		case `${STEPS}_RESET`:
 			return {...initialState};
 

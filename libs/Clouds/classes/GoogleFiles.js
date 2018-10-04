@@ -62,11 +62,15 @@ class GoogleFiles extends GoogleFrame {
 			body : this._config.body
 		});
 
-		return true;
+		return file.dataCreate;
 	}
 
 	async _loadConfig () {
 		this._config.data = await this.copyFromCloudByFileId({fileId : this._configFileId});
+	}
+
+	get configObj () {
+		return this._config.obj;
 	}
 
 	get _parentStore() {

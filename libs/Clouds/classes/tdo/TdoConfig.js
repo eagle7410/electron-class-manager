@@ -24,11 +24,15 @@ class TdoConfig {
 			data.map(data => this._data.push(new TdoGClass(data)));
 	}
 
-	get body () {
+	get obj() {
 		let data = [];
 		this._data.map(file => data.push(file.dataCreate));
 
-		return JSON.stringify(data, null, '\t');
+		return data;
+	}
+
+	get body () {
+		return JSON.stringify(this.obj, null, '\t');
 	}
 
 	get isEmpty() {

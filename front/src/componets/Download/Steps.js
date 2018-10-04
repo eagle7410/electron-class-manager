@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {connect} from 'react-redux';
 import {withStyles} from "@material-ui/core";
@@ -8,7 +7,6 @@ import Stepper from '@material-ui/core/Stepper';
 import StepSelectSetting from './StepSelectSetting'
 import StepShowResult from './StepShowResult'
 import StepReport from './StepReport'
-
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import StepContent from '@material-ui/core/StepContent';
@@ -27,27 +25,23 @@ function getStepContent(step) {
 	}
 }
 
-const Steps = (state) => {
-	const { classes } = state;
-	const { activeStep } = state.store;
+const Steps = (state) => (
+	<div >
+		<Stepper activeStep={state.store.activeStep} orientation="vertical">
+			{steps.map((label, index) => {
+				return (
+					<Step key={label}>
+						<StepLabel>{label}</StepLabel>
+						<StepContent>
+							{getStepContent(index)}
+						</StepContent>
+					</Step>
+				);
+			})}
+		</Stepper>
+	</div>
+);
 
-	return (
-		<div >
-			<Stepper activeStep={activeStep} orientation="vertical">
-				{steps.map((label, index) => {
-					return (
-						<Step key={label}>
-							<StepLabel>{label}</StepLabel>
-							<StepContent>
-								{getStepContent(index)}
-							</StepContent>
-						</Step>
-					);
-				})}
-			</Stepper>
-		</div>
-	);
-};
 export default connect(
 	state => ({
 		store : state.Steps

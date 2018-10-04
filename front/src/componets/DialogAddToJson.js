@@ -31,6 +31,8 @@ const DialogAddToJson = (state) => {
 			Object.keys(fields).map(prop => {
 				if (!state.store[prop].length) errors[prop]= `${fields[prop]} is required.`;
 				data[prop] = state.store[prop].trim();
+
+				return false;
 			});
 
 			if (Object.keys(errors).length) {

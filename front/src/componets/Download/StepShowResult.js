@@ -8,7 +8,6 @@ import {
 	PREFIX_STEP_RESULT as RESULT,
 	PREFIX_STEP_REPORT as REPORT,
 	PREFIX_ALERT as ALERT,
-	PREFIX_SEND_FORM as FORM
 } from "../../const/prefix";
 
 import ProblemList from './StepShowResult/ProblemList'

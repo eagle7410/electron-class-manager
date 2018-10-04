@@ -10,6 +10,7 @@ import {
 	PREFIX_ALERT as ALERT,
 	PREFIX_SEND_FORM as FORM,
 	PREFIX_DIALOG_ADD_TO_JSON as DIALOG_ADD_TO_JSON,
+	PREFIX_STEP_SETTINGS as SETTINGS
 } from "../const/prefix";
 import {ICON_TYPES, TYPES} from "../const/alert";
 import DialogAddToJson from "./DialogAddToJson";
@@ -26,6 +27,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 const FormUpload = (state) => {
 	const {classes} = state;
+
 	const ranges = Object.keys(state.connect.fileTypes)
 		.map(value => ({
 			value,
@@ -44,40 +46,53 @@ const FormUpload = (state) => {
 
 	const handlerAddToJson = (field) => state.openDialogDependecy(field);
 
-	const handlerSend = async () => {
-
+	const handlerSend = () => {
 		state.load();
 
-		try {
-			let errors = {}, data = {};
+		setTimeout(async ()=> {
+			try {
+				let errors = {}, data = {};
 
-			state.errors(errors);
-
-			['path', 'name', 'version', 'type', 'npm', 'classes', 'desc']
-				.map(prop => {
-					if (!state.form[prop]) errors[prop]= `${prop} is required.`;
-					data[prop] = state.form[prop];
-				});
-
-			if (Object.keys(errors).length) {
 				state.errors(errors);
 
-				return false;
+				['path', 'name', 'version', 'type', 'npm', 'classes', 'desc']
+					.map(prop => {
+						if (!state.form[prop]) errors[prop]= `${prop} is required.`;
+						data[prop] = state.form[prop];
+
+						return false;
+					});
+
+				if (Object.keys(errors).length) {
+					state.errors(errors);
+
+					return false;
+				}
+
+				const {file} = await Api.toCloud(data);
+
+				state.addFile(file);
+
+				state.showOk(`File ${file.name}@${file.version} upload ok`);
+
+			} catch (e) {
+				console.error(e);
+				state.showError(e.message || e);
+			} finally {
+				state.loadStop();
 			}
+		});
 
-			await Api.toCloud(data);
-
-		} catch (e) {
-			console.error(e);
-			state.showError(e.message || e);
-		} finally {
-			state.loadStop();
-		}
 	};
 
 	const handlerGetPath = async () => {
 		try {
-			const {path} = await Api.pathOpen();
+			const {path} = await Api.pathOpen({
+				filters : [
+					{name: 'JavaScripts', extensions: ['js']},
+					{name: 'All Files', extensions: ['*']}
+				]
+			});
 
 			if (!path) return false;
 
@@ -219,12 +234,21 @@ export default connect(
 		connect : state.Connections
 	}),
 	dispatch => ({
+		addFile  : (data) => dispatch({type :`${SETTINGS}_ADD_FILE`, data}),
 		load     : () => dispatch({type :`${FORM}_IS_LOAD_RUN`}),
 		loadStop : () => dispatch({type :`${FORM}_IS_LOAD_STOP`}),
 		errors : (data) => dispatch({type :`${FORM}_ERRORS`, data}),
 		openDialogDependecy: (type) => dispatch({type : `${DIALOG_ADD_TO_JSON}_OPEN`, data : type }),
 		formChangeField : (field, value) => dispatch({type : `${FORM}_CHANGE_FIELD`, data : {field, value}}),
 		formAddToJson : (field) => dispatch({type : `${FORM}_ADD_TO_JSON`, data : field}),
+		showOk : message => dispatch({
+			type : `${ALERT}_OPEN`,
+			data : {
+				message,
+				showIcon : ICON_TYPES.OK,
+				type : TYPES.OK
+			}
+		}),
 		showError : message => dispatch({
 			type : `${ALERT}_OPEN`,
 			data : {
