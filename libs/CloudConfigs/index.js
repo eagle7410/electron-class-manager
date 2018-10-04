@@ -29,10 +29,10 @@ class CloudConfigs {
 
 		try {
 
-			if (!fsep.pathExists(baseDir))
-				await fsep.mkdir(baseDir);
+			if (!await fsep.pathExists(baseDir))
+				await fsep.mkdirs(baseDir);
 
-			report.push('Base folder exists -> OK');
+			report.push(`Base folder ${baseDir} exists -> OK`);
 
 			for (let {name, ext, fileId} of files) {
 

@@ -9,8 +9,6 @@ let connect = null;
 
 class Api {
 	static fromCloud(data) {
-		// TODO: clear
-		console.log('data is', data);
 		return reqFull(save, QUERY_PATHS.cloudDownload, data);
 	}
 	static toCloud(data) {

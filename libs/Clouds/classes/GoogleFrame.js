@@ -142,6 +142,7 @@ class GoogleFrame extends CloudInterface {
 				mimeType,
 				parents : (parents.length ? parents : this._parentFolderId)
 			},
+			forever: false,
 			media: {body, mimeType}
 		});
 

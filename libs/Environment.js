@@ -1,9 +1,9 @@
 const PROPS = {
 	isDev: 'isDev'
 };
-// TODO: Back
+
 let config = {
-	[PROPS.isDev] : true
+	[PROPS.isDev] : false
 };
 
 class Environment {

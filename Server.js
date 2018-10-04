@@ -16,10 +16,10 @@ class Server {
 	static async init() {
 
 		if (!await fsep.pathExists(PATHS.PATH_RUNTIME))
-			await fsep.mkdir(PATHS.PATH_RUNTIME);
+			await fsep.mkdirs(PATHS.PATH_RUNTIME);
 
 		if (!await fsep.pathExists(PATHS.PATH_CONFIGS))
-			await fsep.mkdir(PATHS.PATH_CONFIGS);
+			await fsep.mkdirs(PATHS.PATH_CONFIGS);
 	}
 }
 

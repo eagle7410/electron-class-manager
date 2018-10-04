@@ -71,7 +71,10 @@ const StepSetting = (state = initialState, action = {}) => {
 				...data,
 			};
 		case `${STEPS}_RESET`:
-			return {...initialState};
+			return {
+				...initialState,
+				data : state.data,
+			};
 
 		default:
 			return state;

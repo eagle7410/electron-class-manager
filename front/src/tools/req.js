@@ -17,7 +17,7 @@ const send = (url, data, method, headers) => new Promise((resolve) => {
 
 	ipcRenderer.once(action + '-response', (event, data) => {
 		// TODO: clear
-		console.log(action + '-response' , data);
+		// console.log(action + '-response' , data);
 		resolve(data);
 	})
 });
