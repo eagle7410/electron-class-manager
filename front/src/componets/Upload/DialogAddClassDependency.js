@@ -7,10 +7,14 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import classNames from 'classnames';
 
 import {
-	PREFIX_DIALOG_ADD_TO_JSON as PREFIX,
-} from "../const/prefix";
+	PREFIX_DIALOG_ADD_CLASS_DEPENDENCY as PREFIX,
+} from "../../const/prefix";
+import MenuItem from "@material-ui/core/MenuItem/MenuItem";
+import {withStyles} from "@material-ui/core";
+import {classes} from "../../const/styles";
 
 
 const fields = {
@@ -18,9 +22,8 @@ const fields = {
 	value     : 'Version',
 };
 
-const DialogAddToJson = (state) => {
-
-
+const DialogAddClassDependency = (state) => {
+	const {classes} = state;
 	const handlerCreate = async () => {
 		try {
 
@@ -49,6 +52,29 @@ const DialogAddToJson = (state) => {
 		}
 	};
 
+
+	const classStore = new Set();
+	const versionList = [];
+
+	state.settings.data.map(({name, version}) => {
+		classStore.add(name);
+
+		if(state.store.prop && name === state.store.prop)
+			versionList.push(
+				<MenuItem key={`ver_${name}_${version}`} value={version}>
+					{version}
+				</MenuItem>
+			);
+	});
+
+	const classList = [];
+	for (let name of classStore.values())
+		classList.push(
+			<MenuItem key={`class_${name}`} value={name}>
+				{name}
+			</MenuItem>
+		)
+
 	return (
 		<div>
 			<Dialog
@@ -59,19 +85,35 @@ const DialogAddToJson = (state) => {
 			>
 				<DialogTitle id="alert-dialog-title">{`Add dependence to ${state.store.type}`}</DialogTitle>
 				<DialogContent>
-					{Object.keys(fields).map(prop =>
-						<div key={`div_create_${prop}`}>
-							<TextField
-								id={`create_${prop}`}
-								key={`create_${prop}`}
-								label={fields[prop]}
-								value={state.store[prop]}
-								onChange={ev => state.input({field : prop, value: ev.target.value})}
-								error={!!state.store.errors[prop]}
-								helperText={state.store.errors[prop] || ''}
-							/>
-						</div>
-					)}
+					<div>
+						<TextField
+							select
+							fullWidth
+							label="Select class"
+							className={classNames(classes.margin, classes.textField)}
+							error={!!state.store.errors.prop}
+							helperText={state.store.errors.prop || ''}
+							value={state.store.prop}
+							onChange={(event) => state.input({field:'prop', value :event.target.value})}
+						>
+							{classList}
+						</TextField>
+					</div>
+					<div>
+						<TextField
+							select
+							fullWidth
+							label="Select version"
+							className={classNames(classes.margin, classes.textField)}
+							error={!!state.store.errors.value}
+							helperText={state.store.errors.value || ''}
+							value={state.store.value}
+							onChange={(event) => state.input({field:'value', value :event.target.value})}
+						>
+							{versionList}
+						</TextField>
+					</div>
+
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={state.close} color="primary" autoFocus>
@@ -88,7 +130,8 @@ const DialogAddToJson = (state) => {
 
 export default connect(
 	state => ({
-		store: state.DialogAddToJson
+		store: state.DialogAddClassDependency,
+		settings: state.StepSetting
 	}),
 	dispatch => ({
 		add    : (data) => dispatch({type :`${PREFIX}_ADD`, data}),
@@ -96,4 +139,4 @@ export default connect(
 		close  : () => dispatch({type :`${PREFIX}_CLOSE`}),
 		input  : (data) => dispatch({type :`${PREFIX}_INPUT`, data}),
 	})
-)(DialogAddToJson);
+)(withStyles(classes, { withTheme: true })(DialogAddClassDependency))

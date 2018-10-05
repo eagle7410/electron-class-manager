@@ -3,20 +3,22 @@ import {connect} from 'react-redux';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Panel from './Panel'
+import Panel from '../Panel'
 import ReactJson from 'react-json-view'
-import Api from "../Api";
+import Api from "../../Api/index";
 import {
 	PREFIX_ALERT as ALERT,
 	PREFIX_SEND_FORM as FORM,
 	PREFIX_DIALOG_ADD_TO_JSON as DIALOG_ADD_TO_JSON,
+	PREFIX_DIALOG_ADD_CLASS_DEPENDENCY as DIALOG_ADD_CLASS_DEPENDENCY,
 	PREFIX_STEP_SETTINGS as SETTINGS
-} from "../const/prefix";
-import {ICON_TYPES, TYPES} from "../const/alert";
+} from "../../const/prefix";
+import {ICON_TYPES, TYPES} from "../../const/alert";
 import DialogAddToJson from "./DialogAddToJson";
+import DialogAddClassDependency from "./DialogAddClassDependency";
 import {withStyles} from "@material-ui/core";
-import {classes} from "../const/styles";
-import LoadAnimation from '../tools/LoadAnimation';
+import {classes} from "../../const/styles";
+import LoadAnimation from '../../tools/LoadAnimation';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import GetPath from '@material-ui/icons/GetApp';
@@ -224,6 +226,7 @@ const FormUpload = (state) => {
 		}
 
 		<DialogAddToJson />
+		<DialogAddClassDependency />
 	</Panel>);
 };
 
@@ -238,7 +241,8 @@ export default connect(
 		load     : () => dispatch({type :`${FORM}_IS_LOAD_RUN`}),
 		loadStop : () => dispatch({type :`${FORM}_IS_LOAD_STOP`}),
 		errors : (data) => dispatch({type :`${FORM}_ERRORS`, data}),
-		openDialogDependecy: (type) => dispatch({type : `${DIALOG_ADD_TO_JSON}_OPEN`, data : type }),
+		openDialogDependecy: (type) => dispatch({
+			type : `${type === 'npm'? DIALOG_ADD_TO_JSON : DIALOG_ADD_CLASS_DEPENDENCY}_OPEN`, data : type }),
 		formChangeField : (field, value) => dispatch({type : `${FORM}_CHANGE_FIELD`, data : {field, value}}),
 		formAddToJson : (field) => dispatch({type : `${FORM}_ADD_TO_JSON`, data : field}),
 		showOk : message => dispatch({

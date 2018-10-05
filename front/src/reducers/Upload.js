@@ -1,6 +1,7 @@
 import {
 	PREFIX_SEND_FORM as PREFIX,
-	PREFIX_DIALOG_ADD_TO_JSON as DIALOG_ADD_PROP
+	PREFIX_DIALOG_ADD_TO_JSON as DIALOG_ADD_PROP,
+	PREFIX_DIALOG_ADD_CLASS_DEPENDENCY as DIALOG_ADD_CLASS
 } from '../const/prefix'
 import {basename, extname} from 'path'
 
@@ -42,6 +43,7 @@ const Upload = (state = initialState, {type, data}) => {
 			};
 
 		case `${DIALOG_ADD_PROP}_ADD`:
+		case `${DIALOG_ADD_CLASS}_ADD`:
 
 			newState = {
 				...state,
