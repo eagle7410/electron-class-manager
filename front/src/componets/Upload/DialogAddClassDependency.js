@@ -65,6 +65,8 @@ const DialogAddClassDependency = (state) => {
 					{version}
 				</MenuItem>
 			);
+
+		return true;
 	});
 
 	const classList = [];
