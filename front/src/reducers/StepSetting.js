@@ -8,7 +8,7 @@ const initialState = {
 	pathProject : '',
 	saveDir : 'classes',
 	order: 'asc',
-	orderBy: '',
+	orderBy: 'name',
 	selected: [],
 	header : [
 		{ id: 'name', numeric: false, disablePadding: true, label: 'Class name' },
@@ -31,10 +31,10 @@ const StepSetting = (state = initialState, action = {}) => {
 		case `${PREFIX}_ADD_FILE`:
 			return {
 				...state,
-				data : state.data.push(data)
+				data : state.data.concat([data])
 			};
 		case `${PREFIX}_SET_FILES`:
-			return {...state,data};
+			return {...state, data};
 		case `${PREFIX}_SET_ERRORS`:
 			return {
 				...state,

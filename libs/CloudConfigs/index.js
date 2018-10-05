@@ -56,7 +56,7 @@ class CloudConfigs {
 
 	}
 	static async addToCloud(data) {
-		await connections.currentDrive.addFile(data)
+		return await connections.currentDrive.addFile(data)
 	}
 
 	static async copyConfig(localPath, alias) {

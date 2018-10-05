@@ -29,8 +29,11 @@ const Upload = (state = initialState, {type, data}) => {
 
 		case `${PREFIX}_IS_LOAD_STOP`:
 			return {
-				...initialState,
+				...state,
+				isLoad : false
 			};
+		case `${PREFIX}_CLEAR`:
+			return {...initialState, classes: {}};
 
 		case `${PREFIX}_ERRORS`:
 			return {

@@ -46,42 +46,41 @@ const FormUpload = (state) => {
 
 	const handlerAddToJson = (field) => state.openDialogDependecy(field);
 
-	const handlerSend = () => {
+	const handlerSend = async () => {
 		state.load();
 
-		setTimeout(async ()=> {
-			try {
-				let errors = {}, data = {};
+		try {
+			let errors = {}, data = {};
 
-				state.errors(errors);
+			state.errors(errors);
 
-				['path', 'name', 'version', 'type', 'npm', 'classes', 'desc']
-					.map(prop => {
-						if (!state.form[prop]) errors[prop]= `${prop} is required.`;
-						data[prop] = state.form[prop];
-
-						return false;
-					});
-
-				if (Object.keys(errors).length) {
-					state.errors(errors);
+			['path', 'name', 'version', 'type', 'npm', 'classes', 'desc']
+				.map(prop => {
+					if (!state.form[prop]) errors[prop]= `${prop} is required.`;
+					data[prop] = state.form[prop];
 
 					return false;
-				}
+				});
 
-				const {file} = await Api.toCloud(data);
+			if (Object.keys(errors).length) {
+				state.errors(errors);
 
-				state.addFile(file);
-
-				state.showOk(`File ${file.name}@${file.version} upload ok`);
-
-			} catch (e) {
-				console.error(e);
-				state.showError(e.message || e);
-			} finally {
-				state.loadStop();
+				return false;
 			}
-		});
+
+			const response = await Api.toCloud(data);
+			const {file} = response;
+
+			state.addFile(file);
+			state.clear();
+			state.showOk(`File ${file.name}@${file.version} upload ok`);
+
+		} catch (e) {
+			console.error(e);
+			state.showError(e.message || e);
+		} finally {
+			state.loadStop();
+		}
 
 	};
 
@@ -214,7 +213,7 @@ const FormUpload = (state) => {
 			/>
 		</FormControl>
 		{
-			!state.form.stateLoad
+			!state.form.isLoad
 				? <Button variant="contained" color="primary" className={classes.button}
 				          onClick={() => handlerSend()}
 				>
@@ -235,6 +234,7 @@ export default connect(
 	}),
 	dispatch => ({
 		addFile  : (data) => dispatch({type :`${SETTINGS}_ADD_FILE`, data}),
+		clear    : () => dispatch({type :`${FORM}_CLEAR`}),
 		load     : () => dispatch({type :`${FORM}_IS_LOAD_RUN`}),
 		loadStop : () => dispatch({type :`${FORM}_IS_LOAD_STOP`}),
 		errors : (data) => dispatch({type :`${FORM}_ERRORS`, data}),

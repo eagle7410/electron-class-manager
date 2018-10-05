@@ -113,13 +113,13 @@ class GoogleFrame extends CloudInterface {
 		if (mimeType) requestBody.mimeType = mimeType;
 		if (body) media.body = body;
 
-		const result = await this.serviceFiles.update({media,...requestBody});
+		const result = await this.serviceFiles.update({forever: false, media,...requestBody});
 
 		return result.data;
 	}
 
 	async copyFromCloudByFileId({fileId, pathLocal}) {
-		const response = await this.serviceFiles.get({fileId, alt: 'media'});
+		const response = await this.serviceFiles.get({fileId, alt: 'media', forever: false});
 
 		const content = response.data;
 

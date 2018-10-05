@@ -6,6 +6,7 @@ import {
 	BG_COLOR_BLUE,
 	COLOR_WHITE
 } from '../const/colors'
+
 const Panel = (state) => {
 	let props = {disabled : state.disabled, };
 
@@ -15,7 +16,7 @@ const Panel = (state) => {
 	let style = {};
 
 	if (state.titleBlue)
-		style = {background: BG_COLOR_BLUE, color: COLOR_WHITE, width: '100%'};
+		style = {background: BG_COLOR_BLUE, color: COLOR_WHITE};
 
 	return (
 		<ExpansionPanel {...props} >
