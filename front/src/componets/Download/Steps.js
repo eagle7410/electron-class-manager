@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {withStyles} from "@material-ui/core";
 import {classes} from "../../const/styles";
-import {PREFIX_STEPS as PREFIX} from '../../const/prefix'
 import Stepper from '@material-ui/core/Stepper';
 import StepSelectSetting from './StepSelectSetting'
 import StepShowResult from './StepShowResult'
@@ -26,7 +25,7 @@ function getStepContent(step) {
 }
 
 const Steps = (state) => (
-	<div >
+	<div style={{width : '80%'}}>
 		<Stepper activeStep={state.store.activeStep} orientation="vertical">
 			{steps.map((label, index) => {
 				return (
@@ -43,13 +42,6 @@ const Steps = (state) => (
 );
 
 export default connect(
-	state => ({
-		store : state.Steps
-	}),
-	dispatch => ({
-		handleNext : () => dispatch({type : `${PREFIX}_NEXT`}),
-		handleBack : () => dispatch({type : `${PREFIX}_BACK`}),
-		handleReset : () => dispatch({type : `${PREFIX}_RESET`}),
-	})
+	state => ({store : state.Steps})
 )(withStyles(classes, { withTheme: true })(Steps))
 

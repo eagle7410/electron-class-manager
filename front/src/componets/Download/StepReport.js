@@ -21,6 +21,7 @@ const StepReport = (state) => {
 				<FormControl fullWidth className={classes.margin}>
 					<TextField
 						id="outlined-multiline-flexible"
+						fullWidth
 						multiline
 						rowsMax="20"
 						value={report.join('\n')}
