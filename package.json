@@ -6,6 +6,7 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"start": "electron .",
+		"pkds" : "npm run pkg-linux && npm run pkg-win && pkg-mac",
 		"pkg-linux": "electron-packager . class-manager --overwrite --platform=linux  --arch=x64  --ignore='.jscsrc|/docs-attach|/app_build|/frontend|/cli|/*-dev|.gitignore|/.idea|/node_modules/(babel*|gulp*|electron*|grunt*)|/.idea/' --icon=fav.png --prune=true --out=app_build",
 		"pkg-win": "electron-packager . class-manager --overwrite --platform=win32  --arch=x64 --ignore='.jscsrc|/docs-attach|/app_build|/frontend|/cli|/*-dev|.gitignore|/.idea|/node_modules/(babel*|gulp*|electron*|grunt*)|/.idea/' --icon=fav.ico --prune=true --out=app_build -version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName='Manadger'",
 		"pkg-mac": "electron-packager . class-manager --overwrite --platform=darwin --arch=x64  --ignore='.jscsrc|/docs-attach|/app_build|/frontend|/cli|/*-dev|.gitignore|/.idea|/node_modules/(babel*|gulp*|electron*|grunt*)|/.idea/' --icon=fav.icns --prune=true --out=app_build"
