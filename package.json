@@ -2,7 +2,7 @@
 	"name": "electron-class-manager",
 	"version": "1.0.0",
 	"description": "Manager java script classes",
-	"main": "index-app-dev.js",
+	"main": "index-app.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"start": "electron .",

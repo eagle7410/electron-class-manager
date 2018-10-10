@@ -21,7 +21,6 @@ const MenuMainItem = (state) => {
 		          style={style}
 		          onClick={() => state.history.push(state.path) }
 		          disabled={state.disabled || false}
-
 		>
 			<ListItemIcon>
 				{state.children}
@@ -32,10 +31,5 @@ const MenuMainItem = (state) => {
 };
 
 export default connect(
-	state => ({
-		store : state.Menu
-	}),
-	dispatch => ({
-
-	})
+	state => ({store : state.Menu})
 )(withRouter(withStyles(classes, { withTheme: true })(MenuMainItem)));

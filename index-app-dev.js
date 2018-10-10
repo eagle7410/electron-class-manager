@@ -1,3 +1,4 @@
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 const electron      = require('electron');
 const app           = electron.app;
 const BrowserWindow = electron.BrowserWindow;
@@ -23,20 +24,17 @@ const includes = async () => {
 
 		//~ End dev setting
 
-		let mainWindow = new BrowserWindow({
-			width  : 320,
-			height : 600
-		});
+		let mainWindow = new BrowserWindow({});
 
 		await Server.run(mainWindow);
 
 		//~ Dev setting
 
 		mainWindow.toggleDevTools();
-		mainWindow.maximize();
 
 		//~ End dev setting
 
+		mainWindow.maximize();
 		mainWindow.loadURL('http://localhost:3000/');
 
 		mainWindow.on('closed', () => {

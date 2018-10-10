@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import {Route, Switch} from 'react-router-dom';
+import {Route, Switch, I} from 'react-router-dom';
 import {withRouter} from 'react-router'
 import Api from './Api'
 import Header from './componets/Header'
@@ -30,6 +30,7 @@ class App extends  Component {
 		try {
 
 			const {connections, fileTypes} = await Api.init();
+
 			store.dispatch({type : `${CONNECTION}_SET`, data : connections, fileTypes});
 
 			return true;
@@ -58,12 +59,12 @@ class App extends  Component {
 				<MenuMain/>
 				<main className={classes.content}>
 					<div className={classes.toolbar} />
-
 					<Switch>
 						<Route path="/" exact component={Connections}/>
 						<Route path="/connections"  component={Connections}/>
 						<Route path="/upload"  component={Upload}/>
 						<Route path="/download"  component={Download}/>
+						<Route path="*" component={Connections} />
 					</Switch>
 				</main>
 				<Alert/>
