@@ -109,9 +109,13 @@ class GoogleFrame extends CloudInterface {
 		let media = {};
 		let requestBody = { fileId, parents : this._parentFolderId.concat(parents)};
 
+
 		if (fileName) requestBody.name = fileName;
 		if (mimeType) requestBody.mimeType = mimeType;
-		if (body) media.body = body;
+		if (body) {
+			media.body = body;
+			requestBody['Content-Length'] = body.length;
+		}
 
 		const result = await this.serviceFiles.update({forever: false, media,...requestBody});
 
