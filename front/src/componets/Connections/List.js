@@ -7,7 +7,8 @@ import {classes} from "../../const/styles";
 import {
 	PREFIX_ALERT as ALERT,
 	PREFIX_CONNECTION as CONNECTION,
-	PREFIX_STEP_SETTINGS as SETTINGS
+	PREFIX_STEP_SETTINGS as SETTINGS,
+	PREFIX_PACKAGES as PACKAGES,
 } from "../../const/prefix";
 
 import {ICON_TYPES, TYPES} from "../../const/alert";
@@ -40,11 +41,12 @@ const List = (state) => {
 			state.load();
 
 			try {
-				const {isConnected, files} = await Api.cloudConnect({alias});
+				const {isConnected, files, packages} = await Api.cloudConnect({alias});
 
 				if (!isConnected) new Error(`Problem with connect`);
 
 				state.setFiles(files);
+				state.setPackages({data :packages});
 
 				state.connected(alias);
 
@@ -126,8 +128,9 @@ export default connect(
 				type : TYPES.BAD
 			}
 		}),
-		setFiles  : (data) => dispatch({type : `${SETTINGS}_SET_FILES`, data}),
-		hasConfig : (data) => dispatch({type : `${CONNECTION}_HAS_CONFIG`, data}),
-		connected : (data) => dispatch({type : `${CONNECTION}_CONNECTED`, data}),
+		setFiles    : (data) => dispatch({type : `${SETTINGS}_SET_FILES`, data}),
+		setPackages : ({data}) => dispatch({type : `${PACKAGES}_INIT`, data : {data}}),
+		hasConfig   : (data) => dispatch({type : `${CONNECTION}_HAS_CONFIG`, data}),
+		connected   : (data) => dispatch({type : `${CONNECTION}_CONNECTED`, data}),
 	})
 )(withStyles(classes, { withTheme: true })(List))

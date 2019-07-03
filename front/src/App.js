@@ -1,24 +1,26 @@
 import React,{Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import {Route, Switch, I} from 'react-router-dom';
+import {Route, Switch, } from 'react-router-dom';
 import {withRouter} from 'react-router'
 import Api from './Api'
 import Header from './componets/Header'
 import MenuMain from './componets/MenuMain'
 import Alert from './componets/Alert'
-
 import {store} from './store';
 
 import {ICON_TYPES, TYPES} from "./const/alert";
 import {
 PREFIX_CONNECTION as CONNECTION,
 PREFIX_ALERT as ALERT,
+	PREFIX_GITHUB as GITHUB
 } from "./const/prefix";
 
 import {
+	Packages,
+	Github,
 	Connections,
+	Download,
 	Upload,
-	Download
 } from './pages'
 
 import {classes} from './const/styles'
@@ -28,6 +30,11 @@ class App extends  Component {
 
 	async componentDidMount() {
 		try {
+			const data = JSON.parse(Api.getLocalItem(Api.githubLabel));
+
+			if (data) {
+				store.dispatch({type : `${GITHUB}_INIT`, data});
+			}
 
 			const {connections, fileTypes} = await Api.init();
 
@@ -64,6 +71,8 @@ class App extends  Component {
 						<Route path="/connections"  component={Connections}/>
 						<Route path="/upload"  component={Upload}/>
 						<Route path="/download"  component={Download}/>
+						<Route path="/packages"  component={Packages}/>
+						<Route path="/github"  component={Github}/>
 						<Route path="*" component={Connections} />
 					</Switch>
 				</main>

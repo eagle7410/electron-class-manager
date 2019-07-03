@@ -14,12 +14,15 @@ const PATHS = {
 };
 
 const QUERY_PATHS = {
-	cloudDownload : '/cloud-download',
-	cloudUpload : '/cloud-upload',
-	connected : '/cloud-connected',
-	appInit  : '/init',
-	pathOpen : '/path-open',
-	pathSave : '/path-save',
+	cloudDownload  : '/cloud-download',
+	cloudUpload    : '/cloud-upload',
+	packageDeploy  : '/package-deploy',
+	packageSave    : '/package-save',
+	packageMove    : '/package-move',
+	connected      : '/cloud-connected',
+	appInit        : '/init',
+	pathOpen       : '/path-open',
+	pathSave       : '/path-save',
 	accessFileSave : '/access-file-save',
 };
 

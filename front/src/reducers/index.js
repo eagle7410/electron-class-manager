@@ -11,9 +11,15 @@ import {Steps} from './Steps'
 import {StepSetting} from './StepSetting'
 import {StepResult} from './StepResult'
 import {StepReport} from './StepReport'
+import {Github} from './Github'
+import {Packages} from './Packages'
+import {AlertDeployOk} from './AlertDeployOk'
 
 const reducer = combineReducers({
 	routing: routerReducer,
+	AlertDeployOk,
+	Packages,
+	Github,
 	StepReport,
 	StepResult,
 	StepSetting,

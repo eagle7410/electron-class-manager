@@ -1,7 +1,8 @@
-const Send  = require('./libs/Send');
-const Cmd   = require('./libs/Cmd');
-const FileDialog = require('./libs/FileDialog');
+const Send         = require('./libs/Send');
+const Cmd          = require('./libs/Cmd');
+const FileDialog   = require('./libs/FileDialog');
 const CloudConfigs = require('./libs/CloudConfigs');
+const Git          = require("nodegit");
 
 const {
 	QUERY_PATHS
@@ -23,6 +24,35 @@ const route = (route, handler, method) => ({
 });
 
 const config = [
+	route(QUERY_PATHS.packageDeploy, async (res, action, {
+		path,
+		login,
+		pass,
+		repo,
+		branch,
+	}) => {
+		const cloneOptions = {
+			checkoutBranch : branch,
+			fetchOpts : {
+				callbacks: {
+					credentials: () => Git.Cred.userpassPlaintextNew(login, pass),
+					transferProgress: (info) => console.log(info)
+				}
+			}
+		};
+
+		await Git.Clone.clone(`https://github.com/${repo}.git`, path, cloneOptions);
+
+		Send.ok(res, action);
+	}),
+	route(QUERY_PATHS.packageSave, async (res, action, data) => {
+		await CloudConfigs.packageSave(data);
+		Send.ok(res, action);
+	}),
+	route(QUERY_PATHS.packageMove, async (res, action, {id}) => {
+		await CloudConfigs.packageDelete(id);
+		Send.ok(res, action);
+	}),
 	route(QUERY_PATHS.cloudDownload, async (res, action, data) => {
 		const report = await CloudConfigs.loadFromCloud(data);
 		Send.ok(res, action, {report});
@@ -34,10 +64,14 @@ const config = [
 	route(QUERY_PATHS.connected, async (res, action, {alias}) => {
 		const isConnected = await CloudConfigs.connected(alias);
 		let files = [];
+		let packages = [];
 
-		if(isConnected) files = CloudConfigs.filesConfigObj;
+		if(isConnected) {
+			files = CloudConfigs.filesConfigObj;
+			packages = CloudConfigs.packages;
+		}
 
-		Send.ok(res, action, {isConnected, files});
+		Send.ok(res, action, {isConnected, files, packages});
 	}),
 	route(QUERY_PATHS.appInit, async (res, action) => {
 		await CloudConfigs.init();

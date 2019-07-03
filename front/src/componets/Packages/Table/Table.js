@@ -11,15 +11,16 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 import Head from './Head'
 import Tools from './Tools'
-import {PREFIX_STEP_SETTINGS as PREFIX} from "../../../const/prefix";
+import RowEdit from './RowEdit'
+import RowShow from './RowShow'
+import {PREFIX_PACKAGES as PREFIX} from "../../../const/prefix";
 import {unique} from '../../../tools/helperArray'
 
 const EnhancedTable = state => {
 	const { classes } = state;
-	const { data, order, orderBy, selected, rowsPerPage, page } = state.store;
+	const { data, order, orderBy, selected, rowsPerPage, page, isEdit } = state.store;
 	const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
-	// TODO: clear
-	console.log('rowsPerPage ', rowsPerPage);
+
 	const addDependency = (classes) => {
 		let result = [];
 
@@ -50,6 +51,8 @@ const EnhancedTable = state => {
 	const handleChangeRowsPerPage = (event) => state.setRowsOnPage(event.target.value);
 	const handleChangePage = (event, page) => state.setPage(page);
 
+	// TODO: clear
+	console.log('emptyRows', emptyRows);
 	return (
 		<Paper className={classes.root}>
 			<Tools numSelected={selected.length} />
@@ -59,67 +62,51 @@ const EnhancedTable = state => {
 					<TableBody>
 						{stableSort(data, getSorting(order, orderBy))
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-							.map(n => {
-								const isSelect = selected.includes(n.fileId);
-
-								return (
-									<TableRow
-										hover
-										onClick={event => handleClick(event, n.fileId, n.classes)}
-										role="checkbox"
-										aria-checked={isSelect}
-										tabIndex={-1}
-										key={n.fileId}
-										selected={isSelect}
-									>
-										<TableCell padding="checkbox">
-											<Checkbox checked={isSelect} />
-										</TableCell>
-										<TableCell component="th" scope="row" padding="none">
-											{n.name}
-										</TableCell>
-										<TableCell >{n.version}</TableCell>
-										<TableCell >{n.type}</TableCell>
-										<TableCell >{n.desc}</TableCell>
-										<TableCell >{JSON.stringify(n.classes)}</TableCell>
-										<TableCell >{JSON.stringify(n.npm)}</TableCell>
-									</TableRow>
-								);
-							})}
+							.map(n => n.isEdit
+								? <RowEdit row={n} key={'RowE' + n.id} disabled={false}/>
+								: <RowShow row={n} key={'RowS' + n.id} disabled={isEdit}/>
+								)}
 						{emptyRows > 0 && (
 							<TableRow style={{ height: 49 * emptyRows }}>
-								<TableCell colSpan={6} />
+								<TableCell colSpan={6}>
+									{data.length === 0 ? 'Nothing show :)' : ''}
+								</TableCell>
 							</TableRow>
 						)}
 					</TableBody>
 				</Table>
 			</div>
-			<TablePagination
-				component="div"
-				count={data.length}
-				rowsPerPage={rowsPerPage}
-				page={page}
-				backIconButtonProps={{
-					'aria-label': 'Previous Page',
-				}}
-				nextIconButtonProps={{
-					'aria-label': 'Next Page',
-				}}
-				onChangePage={handleChangePage}
-				onChangeRowsPerPage={handleChangeRowsPerPage}
-			/>
+			{
+				data.length
+					? (<TablePagination
+						component="div"
+						count={data.length}
+						rowsPerPage={rowsPerPage}
+						page={page}
+						backIconButtonProps={{
+							'aria-label': 'Previous Page',
+						}}
+						nextIconButtonProps={{
+							'aria-label': 'Next Page',
+						}}
+						onChangePage={handleChangePage}
+						onChangeRowsPerPage={handleChangeRowsPerPage}
+					/>)
+					: null
+			}
+
 		</Paper>
 	);
 };
 
 export default connect(
 	state => ({
-		store : state.StepSetting,
+		store : state.Packages,
 	}),
 	dispatch => ({
 		setSelected : (selected) => dispatch({type : `${PREFIX}_SET_SELECTED`, data: selected}),
 		setPage : (page) => dispatch({type : `${PREFIX}_SET_PAGE`, data: page}),
-		setRowsOnPage : (rowsPerPage) => dispatch({type : `${PREFIX}_SET_ROWS_ON_PAGE`, data: rowsPerPage}),
+		setRowsOnPage : (rowsPerPage) => dispatch({type : `${PREFIX}_SET_ROWS_ON_PAGE`, data: {rowsPerPage}}),
 	})
 )(withStyles(theme => ({
 	root: {
@@ -145,6 +132,7 @@ function desc(a, b, orderBy) {
 }
 
 function stableSort(array, cmp) {
+
 	const stabilizedThis = array.map((el, index) => [el, index]);
 	stabilizedThis.sort((a, b) => {
 		const order = cmp(a[0], b[0]);

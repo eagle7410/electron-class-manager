@@ -30,7 +30,10 @@ class GoogleFrame extends CloudInterface {
 		try {
 			this.auth = authData;
 
-			google.options({auth: this._auth});
+			google.options({
+				auth: this._auth,
+				maxContentLength: -1
+			});
 
 			this._service = google.drive({
 				version: 'v3',

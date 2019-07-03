@@ -15,6 +15,18 @@ class CloudConnections {
 		return this.currentDrive.isConnected;
 	}
 
+	async packageDelete(id) {
+		return this.currentDrive.packageDelete(id);
+	}
+
+	async packageSave(data) {
+		return this.currentDrive.packageSave(data);
+	}
+
+	get packages () {
+		return this.currentDrive.pakages;
+	}
+
 	get filesConfigObj () {
 		return this.currentDrive.configObj;
 	}
