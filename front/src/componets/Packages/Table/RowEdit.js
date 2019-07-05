@@ -58,16 +58,16 @@ const RowEdit = (state) => {
 					 ? <LoadAnimation/>
 					 : [
 							(
-								<Tooltip title="Save changes" key={`${row.id}_sc`}>
-									<IconButton aria-label="Save changes" onClick={handlerSave}>
-										<OkIcon/>
+								<Tooltip title="Cancel" key={`${row.id}_c`}>
+									<IconButton aria-label="Cancel" onClick={() => state.cancel(row.id)}>
+										<CancelIcon />
 									</IconButton>
 								</Tooltip>
 							),
 							(
-								<Tooltip title="Cancel" key={`${row.id}_c`}>
-									<IconButton aria-label="Cancel" onClick={() => state.cancel(row.id)}>
-										<CancelIcon />
+								<Tooltip title="Save changes" key={`${row.id}_sc`}>
+									<IconButton aria-label="Save changes" onClick={handlerSave}>
+										<OkIcon/>
 									</IconButton>
 								</Tooltip>
 							),

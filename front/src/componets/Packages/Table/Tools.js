@@ -40,7 +40,7 @@ const toolbarStyles = theme => ({
 
 const EnhancedTableToolbar = state => {
 	const { classes } = state;
-	const { selected, data, isEdit } = state.store;
+	const { selected, data, isEdit, search } = state.store;
 	const numData = data.length;
 	const numSelected = selected.length;
 
@@ -72,6 +72,8 @@ const EnhancedTableToolbar = state => {
 					numData
 						? <TextField
 							label={'Search'}
+							value={search}
+							onChange={state.changeSearch}
 						/>
 						: null
 				}
@@ -91,6 +93,7 @@ export default connect(
 		store : state.Packages,
 	}),
 	dispatch => ({
-		add : () => dispatch({type : `${PREFIX}_ADD_ITEM`})
+		add : () => dispatch({type : `${PREFIX}_ADD_ITEM`}),
+		changeSearch : (ev) => dispatch({type : `${PREFIX}_CHANGE_SEARCH`, data: ev.target.value}),
 	})
 )(withStyles(toolbarStyles)(EnhancedTableToolbar))

@@ -10,7 +10,7 @@ import {classes} from "../../../const/styles";
 import {PREFIX_PACKAGES as PREFIX} from '../../../const/prefix'
 
 const EnhancedTableHead = (state) => {
-	const { order, orderBy, selected, data, header:rows } = state.store;
+	const { order, orderBy, header:rows } = state.store;
 	const createSortHandler = property => event => state.setOrder(
 		property,
 		(orderBy === property && order === 'desc') ? 'asc' : 'desc'

@@ -22,8 +22,6 @@ const RowShow = (state) => {
 	const { isLoad, loadRow } = store;
 	const { login, pass } = git;
 	const { branch, repo} = row;
-	// TODO: clear
-	state.deployOk({path : '/home/test/path', repo, branch});
 
 	const handleDownload = async () => {
 		try {
@@ -79,7 +77,6 @@ const RowShow = (state) => {
 	return (
 		<TableRow
 			hover
-			role="checkbox"
 			tabIndex={-1}
 			key={row.id}
 		>

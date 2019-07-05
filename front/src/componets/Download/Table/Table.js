@@ -18,8 +18,7 @@ const EnhancedTable = state => {
 	const { classes } = state;
 	const { data, order, orderBy, selected, rowsPerPage, page } = state.store;
 	const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
-	// TODO: clear
-	console.log('rowsPerPage ', rowsPerPage);
+
 	const addDependency = (classes) => {
 		let result = [];
 

@@ -3,6 +3,7 @@ import {
 } from '../const/prefix'
 
 const initialState = {
+	search : '',
 	itemEdit : {
 		name   : '',
 		repo   : '',
@@ -13,9 +14,9 @@ const initialState = {
 	 */
 	data : [{
 		id: Date.now() - 1000,
-		branch: "1.0.0",
-		name: "Vuetufy",
-		repo: "eagle7410/vue-frame",
+		branch : "1.0.0",
+		name   : "Vuetufy",
+		repo   : "eagle7410/vue-frame",
 		isNew: false,
 		isEdit: false,
 	}],
@@ -41,6 +42,11 @@ const Packages = (state = initialState, action = {}) => {
 	let dataUpdate, itemNew, itemEdit;
 
 	switch (type) {
+		case `${PREFIX}_CHANGE_SEARCH`:
+			return {
+				...state,
+				search : data,
+			};
 		case `${PREFIX}_TABLE_LOAD`:
 			return {
 				...state,

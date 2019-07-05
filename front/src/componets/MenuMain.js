@@ -52,11 +52,9 @@ const MenuMain = (state) => {
 				<MenuMainItem label={'From cloud'} path={'/download'} disabled={!state.store.isConnected}>
 					<IconToCloud />
 				</MenuMainItem>
-				<MenuMainItem label={'Packages'} path={'/packages'} >
+				<MenuMainItem label={'Packages'} path={'/packages'} disabled={!state.store.isConnected}>
 					<FontAwesomeIcon icon={faBoxes} style={styleFaIcon}/>
 				</MenuMainItem>
-				{/*// TODO: Back <MenuMainItem label={'Packages'} path={'/packages'} disabled={!state.store.isConnected}>*/}
-
 			</List>
 		</Drawer>
 	);

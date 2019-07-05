@@ -7,52 +7,21 @@ import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
 
 import Head from './Head'
 import Tools from './Tools'
 import RowEdit from './RowEdit'
 import RowShow from './RowShow'
 import {PREFIX_PACKAGES as PREFIX} from "../../../const/prefix";
-import {unique} from '../../../tools/helperArray'
 
 const EnhancedTable = state => {
 	const { classes } = state;
-	const { data, order, orderBy, selected, rowsPerPage, page, isEdit } = state.store;
+	const { data, order, orderBy, selected, rowsPerPage, page, isEdit, search } = state.store;
 	const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
-
-	const addDependency = (classes) => {
-		let result = [];
-
-		for(let [name, version] of Object.entries(classes) ) {
-			let file = data.find(f => f.name === name && f.version === version);
-
-			if (!file) continue;
-
-			result.push(file.fileId, ...addDependency(file.classes));
-		}
-
-		return result;
-	};
-
-	const handleClick = (event, id, classes) => {
-		const selectedIndex = selected.indexOf(id);
-		let newSelected = [...selected];
-
-		if (selectedIndex === -1) {
-			newSelected.push(id,...addDependency(classes));
-		} else {
-			newSelected.splice(selectedIndex, 1);
-		}
-
-		state.setSelected(unique(newSelected));
-	};
 
 	const handleChangeRowsPerPage = (event) => state.setRowsOnPage(event.target.value);
 	const handleChangePage = (event, page) => state.setPage(page);
 
-	// TODO: clear
-	console.log('emptyRows', emptyRows);
 	return (
 		<Paper className={classes.root}>
 			<Tools numSelected={selected.length} />
@@ -62,6 +31,7 @@ const EnhancedTable = state => {
 					<TableBody>
 						{stableSort(data, getSorting(order, orderBy))
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+							.filter(row => (row.repo + row.branch + row.name).includes(search))
 							.map(n => n.isEdit
 								? <RowEdit row={n} key={'RowE' + n.id} disabled={false}/>
 								: <RowShow row={n} key={'RowS' + n.id} disabled={isEdit}/>
