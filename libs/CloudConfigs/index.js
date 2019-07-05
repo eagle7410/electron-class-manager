@@ -85,6 +85,17 @@ class CloudConfigs {
 		return true;
 	}
 
+	static packageSave(data) {
+		return connections.packageSave(data);
+	}
+
+	static packageDelete(id) {
+		return connections.packageDelete(id);
+	}
+
+	static get packages() {
+		return connections.packages || [];
+	}
 	static get filesConfigObj() {
 		return connections.filesConfigObj || [];
 	}
