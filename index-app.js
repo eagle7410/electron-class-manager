@@ -11,6 +11,7 @@ const includes = async () => {
 	try {
 		let mainWindow = new BrowserWindow({});
 		await Server.run(mainWindow);
+		
 		mainWindow.maximize();
 		mainWindow.loadURL(`file://${__dirname}/html/index.html`);
 		mainWindow.on('closed', () => {

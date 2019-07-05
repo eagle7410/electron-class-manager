@@ -1,6 +1,8 @@
 # electron-class-manager
 Manager java script classes
-
+## Version
+ - 0.0.1 -Last
+ - 1.0.1 -Add packages
 ## People
 Developer [Igor Stcherbina](https://drive.google.com/file/d/1tm6j8uGoeEbaVDYKlsQlkkxAD5WMXp3-/view?usp=sharing)
 
