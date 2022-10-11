@@ -27,7 +27,7 @@
 		"console-color": "git+https://github.com/eagle7410/console-color.git",
 		"electron": "2.0.8",
 		"electron-devtools-installer": "2.2.4",
-		"electron-packager": "12.1.0",
+		"electron-packager": "16.0.0",
 		"electron-rebuild": "1.8.5",
 		"mocha": "5.2.0",
 		"readline": "1.3.0"
